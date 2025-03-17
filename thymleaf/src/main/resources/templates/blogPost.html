@@ -6,28 +6,29 @@
 </head>
 <div layout:fragment="content">
     <!-- 메인 콘텐츠 -->
-    <main class="col-md-9">
-        <div class="row">
-            <div class="col-12 mb-2 border">
-                <h1>글 제목</h1>
-            </div>
+    <form>
+        <div class="mb-3">
+            <label for="postTitle" class="form-label">글 제목</label>
+            <input type="text" class="form-control" id="postTitle" placeholder="제목 입력">
         </div>
-        <div class="row">
-            <div class="col-12 mb-5 border">
-                글 내용
-            </div>
+        <div class="mb-3">
+            <label for="postContent" class="form-label">본문</label>
+            <textarea class="form-control" id="postContent" rows="25" placeholder="내용 입력"></textarea>
         </div>
-        <div class="row">
-            <div class="col-6">
-                <button type="button" class="btn btn-primary">좋아요</button>
-                <button type="button" class="btn btn-primary">댓글열기</button>
-            </div>
-            <div class="col-6 d-md-flex justify-content-md-end">
-                <button type="button" class="btn btn-primary me-1">수정</button>
-                <button type="button" class="btn btn-danger">삭제</button>
-            </div>
+        <div class="mb-3">
+            <label for="postCategory" class="form-label">카테고리</label>
+            <select class="form-select" id="postCategory">
+                <option value="음식">음식</option>
+                <option value="음악">음악</option>
+                <option value="책">책</option>
+                <option value="영화">영화</option>
+            </select>
         </div>
-    </main>
+        <div class="d-flex justify-content-end">
+            <button type="submit" class="btn btn-primary me-2">저장</button>
+            <button type="button" class="btn btn-danger" onclick="cancelPost()">취소</button>
+        </div>
+    </form>
 </div>
 
 </html>
