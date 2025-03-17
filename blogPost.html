@@ -35,16 +35,11 @@
     </div>
     <div class="d-flex justify-content-end">
       <button type="submit" class="btn btn-primary me-2">저장</button>
-      <button type="button" class="btn btn-danger" onclick="cancelPost()">취소</button>
+      <!-- 취소 버튼을 링크로 변경 -->
+      <a href="blogList.html" class="btn btn-danger">취소</a>
     </div>
   </form>
 </div>
-<script>
-  function cancelPost() {
-    if (confirm("작성 중인 내용을 취소하시겠습니까?")) {
-      window.location.href = "blogList.html";  // 취소 버튼 클릭 시 blogList.html로 이동
-    }
-  }
-</script>
+
 </body>
 </html>
