@@ -1,0 +1,173 @@
+/* 전체 레이아웃 */
+body {
+  font-family: 'Arial', sans-serif;
+  background-color: #f7f7f7;
+  color: #333;
+}
+
+header {
+  background-color: #fff;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+h1 {
+  font-size: 28px;
+  color: #333;
+}
+
+/* 블로그 게시물 카드 스타일 */
+.card {
+  border: none;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  transition: transform 0.3s;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+}
+
+.card-title {
+  font-size: 20px;
+  color: #333;
+}
+
+.card-text {
+  font-size: 16px;
+  color: #555;
+}
+
+/* 사이드바 스타일 */
+aside {
+  background-color: #fff;
+  border-radius: 10px;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+  padding: 20px;
+}
+
+.list-group-item {
+  background-color: #f8f9fa;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  margin-bottom: 10px;
+  font-size: 16px;
+}
+
+.list-group-item.active {
+  background-color: #007bff;
+  color: white;
+}
+
+/* 카테고리 편집 모달 */
+.modal-content {
+  border-radius: 10px;
+}
+
+.modal-header {
+  background-color: #f1f1f1;
+  border-bottom: 1px solid #ddd;
+}
+
+.modal-body {
+  font-size: 16px;
+}
+
+.modal-body ul {
+  margin-bottom: 10px;
+}
+
+button {
+  transition: background-color 0.3s;
+}
+
+button:hover {
+  background-color: #0056b3;
+  color: white;
+}
+
+form .form-control {
+  border-radius: 5px;
+}
+
+select.form-select {
+  border-radius: 5px;
+}
+
+textarea.form-control {
+  border-radius: 5px;
+  height: 300px;
+}
+
+/* 버튼 스타일 */
+.btn-danger, .btn-primary {
+  border-radius: 5px;
+}
+
+.d-flex.justify-content-end button {
+  margin-left: 10px;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+  header {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .container {
+    padding: 0 15px;
+  }
+
+  .col-md-9, .col-md-3 {
+    width: 100%;
+    margin-bottom: 20px;
+  }
+
+  .modal-body input,
+  .modal-body textarea {
+    width: 100%;
+  }
+}
+
+/* 카테고리 영역 스타일 */
+#categoryList {
+  padding-left: 20px;
+}
+
+#categoryList .list-group-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#categoryList .form-check-input {
+  margin-right: 10px;
+}
+
+#categoryList .list-group-item:hover {
+  background-color: #f8f9fa;
+}
+
+#categoryList li {
+  font-size: 1.1rem;
+  margin-bottom: 8px;
+}
+
+.modal-body {
+  font-family: Arial, sans-serif;
+}
+
+.modal-header {
+  background-color: #f8f9fa;
+  border-bottom: 1px solid #dee2e6;
+}
+
+.modal-title {
+  font-size: 1.25rem;
+  font-weight: bold;
+}
+
+.modal-body label {
+  font-size: 1rem;
+  margin-bottom: 10px;
+}
