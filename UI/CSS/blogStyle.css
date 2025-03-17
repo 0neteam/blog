@@ -1,6 +1,6 @@
 /* 전체 레이아웃 */
 body {
-  font-family: 'Arial', sans-serif;
+  font-family: 'Noto Sans KR', sans-serif;
   background-color: #f7f7f7;
   color: #333;
 }
@@ -24,12 +24,12 @@ h1 {
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: scale(1.05);
 }
 
 .card-title {
-  font-size: 20px;
-  color: #333;
+  font-size: 1.25rem;
+  font-weight: 600;
 }
 
 .card-text {
@@ -43,6 +43,7 @@ aside {
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 20px;
+  padding-left: 30px;  /* 사이드바 왼쪽에 간격 추가 */
 }
 
 .list-group-item {
@@ -109,23 +110,31 @@ textarea.form-control {
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
-  header {
-    flex-direction: column;
-    text-align: center;
-  }
-
   .container {
+    margin-left: 20px;  /* 왼쪽에 여백 추가 */
+    margin-right: 20px; /* 오른쪽에 여백 추가 */
     padding: 0 15px;
   }
 
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* 사이에 간격 추가 */
+  }
+
   .col-md-9, .col-md-3 {
-    width: 100%;
+    flex: 1 1 100%;
     margin-bottom: 20px;
   }
 
   .modal-body input,
   .modal-body textarea {
     width: 100%;
+  }
+
+  /* 메인 콘텐츠 (본문) 영역 */
+  main {
+    padding-right: 30px;  /* 본문 오른쪽에 간격 추가 */
   }
 }
 
@@ -170,4 +179,45 @@ textarea.form-control {
 .modal-body label {
   font-size: 1rem;
   margin-bottom: 10px;
+}
+
+.mt-auto {
+    position: -webkit-sticky; /* Safari 지원 */
+    position: sticky;
+    bottom: 10px;  /* 화면 하단에서의 여백 */
+}
+
+/* Footer 스타일 */
+footer {
+  background-color: #333;
+  color: white;
+  padding: 20px 0;
+  text-align: center;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+}
+
+footer a {
+  color: #f8f9fa;
+  text-decoration: none;
+  margin: 0 15px;
+}
+
+footer a:hover {
+  text-decoration: underline;
+}
+
+footer .social-icons {
+  margin-top: 10px;
+}
+
+footer .social-icons i {
+  font-size: 20px;
+  margin: 0 10px;
+  cursor: pointer;
+}
+
+footer .social-icons i:hover {
+  color: #007bff;
 }
