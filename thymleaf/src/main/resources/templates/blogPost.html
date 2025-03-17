@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http//www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
+    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}">
+
+<head>
+</head>
+<div layout:fragment="content">
+    <!-- 메인 콘텐츠 -->
+    <main class="col-md-9">
+        <div class="row">
+            <div class="col-12 mb-2 border">
+                <h1>글 제목</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-12 mb-5 border">
+                글 내용
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <button type="button" class="btn btn-primary">좋아요</button>
+                <button type="button" class="btn btn-primary">댓글열기</button>
+            </div>
+            <div class="col-6 d-md-flex justify-content-md-end">
+                <button type="button" class="btn btn-primary me-1">수정</button>
+                <button type="button" class="btn btn-danger">삭제</button>
+            </div>
+        </div>
+    </main>
+</div>
+
+</html>
