@@ -110,25 +110,31 @@ textarea.form-control {
 
 /* 반응형 디자인 */
 @media (max-width: 768px) {
-  header {
-    flex-direction: column;
-    text-align: center;
-  }
-
   .container {
     margin-left: 20px;  /* 왼쪽에 여백 추가 */
     margin-right: 20px; /* 오른쪽에 여백 추가 */
     padding: 0 15px;
   }
 
+  .row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px; /* 사이에 간격 추가 */
+  }
+
   .col-md-9, .col-md-3 {
-    width: 100%;
+    flex: 1 1 100%;
     margin-bottom: 20px;
   }
 
   .modal-body input,
   .modal-body textarea {
     width: 100%;
+  }
+
+  /* 메인 콘텐츠 (본문) 영역 */
+  main {
+    padding-right: 30px;  /* 본문 오른쪽에 간격 추가 */
   }
 }
 
@@ -180,14 +186,6 @@ textarea.form-control {
     position: sticky;
     bottom: 10px;  /* 화면 하단에서의 여백 */
 }
-
-  .row {
-    margin-right: 0px;  /* 오른쪽 여백을 없애서 두 컬럼이 바로 붙게 함 */
-    margin-left: 0px;   /* 왼쪽 여백을 없애서 두 컬럼이 바로 붙게 함 */  }
-
-  main {
-    padding-right: 30px;  /* 본문 오른쪽에 간격 추가 */
-  }
 
 /* Footer 스타일 */
 footer {
