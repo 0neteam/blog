@@ -1,13 +1,13 @@
-package com.example.thymleaf;
+package com.java.blog;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class ThymleafApplication {
+public class BlogApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(ThymleafApplication.class, args);
+		SpringApplication.run(BlogApplication.class, args);
 	}
 
 }

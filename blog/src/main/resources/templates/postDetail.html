@@ -3,19 +3,20 @@
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}">
 
 <head>
-    <link rel="stylesheet" href="/css/blogStyle.css">
+    
 </head>
 <div layout:fragment="content">
+    <link rel="stylesheet" href="static/css/blogStyle.css">
+    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <!-- 메인 콘텐츠 -->
     <main>
         <div class="row">
             <div class="col-12 mb-2 border rounded">
-                <h1>글 제목</h1>
+                <h1 th:text={post.title}"></h1>
             </div>
         </div>
         <div class="row">
-            <div class="col-12 mb-5 border rounded ">
-                글 내용
+            <div th:text="${post.contents}" class="col-12 mb-5 border rounded ">
             </div>
         </div>
         <div class="row">
