@@ -21,4 +21,7 @@ public class MainController {
         return "postDetail";
     }
 
+    @GetMapping("/blogPostEdit")
+    public String blogPostEdit() { return "blogPostEdit"; }
+
 }
