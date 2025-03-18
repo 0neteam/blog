@@ -20,15 +20,22 @@
                 <p><strong>이메일:</strong> user@example.com</p>
                 <p><strong>가입일:</strong> 2025-03-17</p>
             </div>
-            <a class="list-group-item list-group-item-action">글 작성</a>
-            <a href="#" class="list-group-item list-group-item-action">게시글 검색</a>
+            <a class="list-group-item list-group-item-action" href="blogPost">글 작성</a>
+            <div class="list-group-item">
+                <div class="input-group">
+                    <input type="text" id="searchInput" class="form-control" placeholder="게시글 검색">
+                    <button class="btn btn-primary" onclick="filterPosts()">
+                        <i class="bi bi-search"></i>
+                    </button>
+                </div>
+            </div>
             <div class="list-group-item">
                 <h6>카테고리</h6>
                 <ul class="list-unstyled">
-                    <li>음식</li>
-                    <li>음악</li>
-                    <li>책</li>
-                    <li>영화</li>
+                    <li>• 음식</li>
+                    <li>• 음악</li>
+                    <li>• 책</li>
+                    <li>• 영화</li>
                 </ul>
                 <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
                     data-bs-target="#categoryModal">카테고리 편집</button>

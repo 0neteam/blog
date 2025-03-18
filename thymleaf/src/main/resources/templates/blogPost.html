@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html xmlns:th="http//www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
     xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}">
+<link rel="stylesheet" href="/static/css/blogStyle.css">
 
-<head>
-</head>
 <div layout:fragment="content">
-    <!-- 메인 콘텐츠 -->
+    <div class="container mt-3">
+        <h2>새 글 작성</h2>
     <form>
         <div class="mb-3">
             <label for="postTitle" class="form-label">글 제목</label>
@@ -29,6 +29,7 @@
             <button type="button" class="btn btn-danger" onclick="cancelPost()">취소</button>
         </div>
     </form>
+</div>
 </div>
 
 </html>
