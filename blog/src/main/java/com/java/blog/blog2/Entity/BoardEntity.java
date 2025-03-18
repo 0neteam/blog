@@ -2,30 +2,38 @@
 //
 //import jakarta.persistence.*;
 //import lombok.AllArgsConstructor;
-//import lombok.Builder;
 //import lombok.Data;
 //import lombok.NoArgsConstructor;
 //
-//import java.time.LocalDate;
+//import java.util.Date;
 //
 //@Entity
 //@Table(name = "board")
 //@Data
-//@Builder
 //@AllArgsConstructor
 //@NoArgsConstructor
 //public class BoardEntity {
 //
 //    @Id
 //    @GeneratedValue(strategy = GenerationType.IDENTITY)
-//    private int no;
+//    private Integer no;
 //
-//    private int regUserNo;
-//    private int type;
+//    @Column(nullable = false, length = 30)
 //    private String name;
-//    private LocalDate regDate;
+//
+//    @Column(nullable = false, length = 30)
 //    private String domain;
-//    private String description;
-//    private char useYN;
+//
+//    @Column(nullable = false, length = 30)
+//    private String host;
+//
+//    @Column(nullable = false)
+//    private String des;
+//
+//    @Column(nullable = false)
+//    private Date date;
+//
+//    @Column(nullable = false, columnDefinition = "CHAR")
+//    private String useYN;
 //
 //}
