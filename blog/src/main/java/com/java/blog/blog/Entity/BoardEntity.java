@@ -24,14 +24,11 @@ public class BoardEntity {
     @Column(nullable = false, length = 30)
     private String domain;
 
-    @Column(nullable = false, length = 30)
-    private String host;
+    @Column(nullable = false)
+    private Date regDate;
 
     @Column(nullable = false)
-    private String des;
-
-    @Column(nullable = false)
-    private Date date;
+    private String description;
 
     @Column(nullable = false, columnDefinition = "CHAR")
     private String useYN;

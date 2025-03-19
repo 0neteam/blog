@@ -11,57 +11,25 @@
         <link rel="stylesheet" href="/css/blogStyle.css">
     </head>
 
-<div layout:fragment="aside">
-    <aside>
-        <div class="list-group">
-            <div class="list-group-item active">사용자 정보</div>
-            <div class="list-group-item">
-                <p><strong>이름:</strong> 홍길동</p>
-                <p><strong>이메일:</strong> user@example.com</p>
-                <p><strong>가입일:</strong> 2025-03-17</p>
-            </div>
-            <a class="list-group-item list-group-item-action" href="blogPost">글 작성</a>
-            <div class="list-group-item">
-                <div class="input-group">
-                    <input type="text" id="searchInput" class="form-control" placeholder="게시글 검색">
-                    <button class="btn btn-primary">
-                        <i class="bi bi-search"></i>
-                    </button>
-                </div>
-            </div>
-            <div class="list-group-item">
-                <h6>카테고리</h6>
-                <ul class="list-unstyled">
-                    <li th:each="eachMenu : ${menuList}"><p th:text="$eachMenu.name"></p></li>
-                </ul>
-                <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
-                    data-bs-target="#categoryModal">메뉴
-                    편집</button>
-            </div>
-        </div>
-<!-- 메뉴 편집 모달 -->
+    <div layout:fragment="categoryModal">
+<!-- 카테고리 편집 모달 -->
 <div class="modal fade" id="categoryModal" tabindex="-1" aria-labelledby="categoryModalLabel" aria-hidden="true">
     <div class="modal-dialog">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="categoryModalLabel">메뉴 편집</h5>
+                <h5 class="modal-title" id="categoryModalLabel">카테고리 편집</h5>
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
                 <div>
-                    <label for="newCategory" class="form-label">새 메뉴 추가</label>
-                    <input type="text" id="newCategory" class="form-control" placeholder="메뉴 입력">
+                    <label for="newCategory" class="form-label">새 카테고리 추가</label>
+                    <input type="text" id="newCategory" class="form-control" placeholder="카테고리 입력">
                     <button class="btn btn-success mt-2">추가</button>
                 </div>
                 <hr>
                 <div>
-                    <label class="form-label">메뉴 삭제</label>
+                    <label class="form-label">카테고리 삭제</label>
                     <ul class="list-group" id="categoryList">
-                        <tr th:each="eachMenu : ${menuList}">
-                            <li class="list-group-item">
-                                <input type="checkbox" class="form-check-input me-2"> <p th:text="$eachMenu.name"></p>
-                            </li>
-                        </tr>
                         <!-- <li class="list-group-item">
                                 <input type="checkbox" class="form-check-input me-2"> 음식
                             </li>
@@ -75,7 +43,6 @@
                                 <input type="checkbox" class="form-check-input me-2"> 영화
                             </li> -->
                     </ul>
-
                     <div class="d-flex justify-content-between mt-2">
                         <button class="btn btn-danger">삭제</button>
                         <button class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
@@ -85,10 +52,10 @@
         </div>
     </div>
 </div>
-<!-- 메뉴 편집 모달 -->
+<!-- 카테고리 편집 모달 -->
+    </div>
+</html>    
 
-    </aside>
 
-</div>
-
-</html>
+    
+    
