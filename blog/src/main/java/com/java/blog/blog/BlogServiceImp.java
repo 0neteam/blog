@@ -41,7 +41,16 @@ public class BlogServiceImp implements BlogService {
     //@Query
     @Override
     public String getMenu(Model model) {
-        System.out.printf("getMenu 불러짐.");
+
+        System.out.printf("getMenu 는 미완성 메서드임!!!!!!!!! 반드시 수정해야함!!!!");
+        /*
+        조건이 있음.
+        boardNo = 1 이어야함(일단 블로그는 단일인 상황이니까)
+        orderNo 로 메뉴순번 정렬
+        ref(매뉴ref) 로 부모/깊이 정렬 0일경우 최상위 메뉴이며 0보다 크면 서브메뉴임.
+        depth(메뉴레벨)로 sub메뉴 정렬
+        useYN을 참고하여 Y만 나오게 할것.
+         */
         List<MenuEntity> menuEntities = menuRepository.findByUseYN("Y");
         model.addAttribute("menuList",menuEntities);
         return "";
