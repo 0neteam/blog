@@ -12,7 +12,7 @@ $( () => {
             type: 'POST',
             data: {no: postNo},
             success: (response) => {
-                if(response === "N"){ //서버 응답값이 1일경우 성공처리
+                if(response === "N"){
                     alert("삭제되었습니다.");
                     window.location.href = "/blogList";
                 }else{

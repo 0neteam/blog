@@ -38,11 +38,11 @@ public class BlogController {
         return blogService.deletePost(no);
     }
 
-    @ResponseBody
-    @PostMapping("getMenu")
-    public String getMenu(Model model){
-        return blogService.getMenu(model);
-    }
+//    @ResponseBody
+//    @PostMapping("getMenu")
+//    public String getMenu(Model model){
+//        return blogService.getMenu(model);
+//    }
 
 //    @ResponseBody
 //    @PostMapping("deleteMenu")

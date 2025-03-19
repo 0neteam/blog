@@ -32,7 +32,7 @@
             <div class="list-group-item">
                 <h6>카테고리</h6>
                 <ul class="list-unstyled">
-                    <li th:each="eachMenu : ${menuList}"><p th:text="$eachMenu.name"></p></li>
+                    <li th:each="eachMenu : ${menuList}"><p th:text="${eachMenu.name}"></p></li>
                 </ul>
                 <button class="btn btn-sm btn-outline-primary" data-bs-toggle="modal"
                     data-bs-target="#categoryModal">메뉴
@@ -59,7 +59,7 @@
                     <ul class="list-group" id="categoryList">
                         <tr th:each="eachMenu : ${menuList}">
                             <li class="list-group-item">
-                                <input type="checkbox" class="form-check-input me-2"> <p th:text="$eachMenu.name"></p>
+                                <input type="checkbox" class="form-check-input me-2"> <p th:text="${eachMenu.name}"></p>
                             </li>
                         </tr>
                         <!-- <li class="list-group-item">

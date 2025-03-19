@@ -23,6 +23,7 @@ public class BlogServiceImp implements BlogService {
     public String postDetail(Model model, Integer no) {
         PostEntity postEntity = postRepository.findById(no).orElseThrow();
         model.addAttribute("post",postEntity);
+        getMenu(model); // 화면에 메뉴 표시용
         return "postDetail";
     }
 
@@ -40,6 +41,7 @@ public class BlogServiceImp implements BlogService {
     //@Query
     @Override
     public String getMenu(Model model) {
+        System.out.printf("getMenu 불러짐.");
         List<MenuEntity> menuEntities = menuRepository.findByUseYN("Y");
         model.addAttribute("menuList",menuEntities);
         return "";
