@@ -1,4 +1,4 @@
-package com.java.blog.blog;
+package com.java.blog.blog.service;
 
 
 import org.springframework.ui.Model;

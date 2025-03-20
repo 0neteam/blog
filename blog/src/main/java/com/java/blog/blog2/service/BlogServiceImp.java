@@ -1,11 +1,11 @@
-//package com.java.blog.blog2;
+//package com.java.blog.blog2.service;
 //
-//import com.java.blog.blog2.Entity.BoardEntity;
-//import com.java.blog.blog2.Entity.MenuEntity;
-//import com.java.blog.blog2.Entity.PostEntity;
-//import com.java.blog.blog2.Repository.BoardRepository;
-//import com.java.blog.blog2.Repository.MenuRepository;
-//import com.java.blog.blog2.Repository.PostRepository;
+//import com.java.blog.blog2.entity.BoardEntity;
+//import com.java.blog.blog2.entity.MenuEntity;
+//import com.java.blog.blog2.entity.PostEntity;
+//import com.java.blog.blog2.repository.BoardRepository;
+//import com.java.blog.blog2.repository.MenuRepository;
+//import com.java.blog.blog2.repository.PostRepository;
 //import jakarta.servlet.http.HttpServletRequest;
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.stereotype.Service;

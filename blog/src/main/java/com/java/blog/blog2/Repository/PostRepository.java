@@ -1,6 +1,6 @@
-//package com.java.blog.blog2.Repository;
+//package com.java.blog.blog2.repository;
 //
-//import com.java.blog.blog2.Entity.PostEntity;
+//import com.java.blog.blog2.entity.PostEntity;
 //import org.springframework.data.jpa.repository.JpaRepository;
 //import org.springframework.stereotype.Repository;
 //

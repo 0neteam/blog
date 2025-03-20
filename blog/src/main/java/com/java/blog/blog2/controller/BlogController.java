@@ -1,6 +1,7 @@
-//package com.java.blog.blog2;
+//package com.java.blog.blog2.controller;
 //
-//import com.java.blog.blog2.Entity.PostEntity;
+//import com.java.blog.blog2.service.BlogServiceImp;
+//import com.java.blog.blog2.entity.PostEntity;
 //import jakarta.servlet.http.HttpServletRequest;
 //import lombok.RequiredArgsConstructor;
 //import org.springframework.stereotype.Controller;

@@ -1,8 +1,8 @@
-package com.java.blog.blog;
+package com.java.blog.blog.service;
 
 
-import com.java.blog.blog.Entity.MenuEntity;
-import com.java.blog.blog.Repository.MenuRepository;
+import com.java.blog.blog.entity.MenuEntity;
+import com.java.blog.blog.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;

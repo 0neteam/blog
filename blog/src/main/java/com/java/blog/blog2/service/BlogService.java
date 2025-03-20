@@ -1,7 +1,7 @@
-//package com.java.blog.blog2;
+//package com.java.blog.blog2.service;
 //
-//import com.java.blog.blog2.Entity.MenuEntity;
-//import com.java.blog.blog2.Entity.PostEntity;
+//import com.java.blog.blog2.entity.MenuEntity;
+//import com.java.blog.blog2.entity.PostEntity;
 //import jakarta.servlet.http.HttpServletRequest;
 //
 //import java.util.List;

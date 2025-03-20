@@ -1,9 +1,9 @@
-package com.java.blog.blog;
+package com.java.blog.blog.service;
 
-import com.java.blog.blog.Entity.MenuEntity;
-import com.java.blog.blog.Entity.PostEntity;
-import com.java.blog.blog.Repository.MenuRepository;
-import com.java.blog.blog.Repository.PostRepository;
+import com.java.blog.blog.entity.MenuEntity;
+import com.java.blog.blog.entity.PostEntity;
+import com.java.blog.blog.repository.MenuRepository;
+import com.java.blog.blog.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.data.jpa.repository.Query;

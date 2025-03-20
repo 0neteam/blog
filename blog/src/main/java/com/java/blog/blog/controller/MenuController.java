@@ -1,5 +1,6 @@
-package com.java.blog.blog;
+package com.java.blog.blog.controller;
 
+import com.java.blog.blog.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
