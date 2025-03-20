@@ -4,11 +4,12 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
+
+//post/get
+// blog/menu/postDetail
+@RequestMapping("/post")
 @RequiredArgsConstructor
 @Controller
 public class BlogController {
@@ -24,16 +25,18 @@ public class BlogController {
 
     private final BlogService blogService;
 
-    @GetMapping("/postDetail")
+    @GetMapping("/detail")
     public String postDetail(Model model, @RequestParam(name = "no") Integer no){
+
         return blogService.postDetail(model, no);
+
     }
 
-    @GetMapping("/blogPostEdit")
+    @GetMapping("/edit")
     public String blogPostEdit() { return "blogPostEdit"; }
 
     @ResponseBody
-    @PostMapping("deletePost")
+    @PostMapping("delete")
     public String deletePost(@RequestParam("no") Integer no){
         return blogService.deletePost(no);
     }
