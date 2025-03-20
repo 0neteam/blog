@@ -9,14 +9,22 @@
 <div layout:fragment="content">
     <h5>메뉴 편집</h5>
     <div>
-        <label for="newCategory" class="form-label">새 메뉴 추가</label>
-        <input type="text" id="newCategory" class="form-control" placeholder="메뉴 입력">
-        <button class="btn btn-success mt-2">추가</button>
+        <form id="addMenu" th:action="@{/menu/add}" method="post">
+            <label for="newMenu" class="form-label">새 메뉴 추가</label>
+            <select class="form-select" name="ref" id="ref">
+                <option value="0">상위 항목 없음</option>
+                <th:block th:each="eachMenu : ${menuList}">
+                    <option th:value="${eachMenu.no}" th:text="${eachMenu.name}"></option>
+                </th:block>
+            </select>
+            <input type="text" id="menuName" class="form-control" placeholder="메뉴명을 입력하세요">
+            <button class="btn btn-success mt-2">추가</button>
     </div>
+    </form>
     <hr>
     <div>
         <label class="form-label">메뉴 삭제</label>
-        <ul class="list-group" id="categoryList">
+        <ul class="list-group" id="MenuList">
             <tr th:each="eachMenu : ${menuList}">
                 <li class="list-group-item">
                     <input type="checkbox" class="form-check-input me-2">
@@ -30,6 +38,7 @@
             <button class="btn btn-secondary" data-bs-dismiss="modal">닫기</button>
         </div>
     </div>
+
 </div>
 
 </html>
