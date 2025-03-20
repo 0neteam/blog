@@ -48,7 +48,7 @@ public class MenuServiceImp implements MenuService {
         );
         //MenuEntity menuEntity = menuRepository.save(menuAddDTO.toEntity());
 
-        // 또는 적절한 뷰 이름 반환하도록 수정하지 않으면 뻗음.
+        // 적절한 뷰 반환하도록 수정하지 않으면 뻗음.
         return "";
     }
 }

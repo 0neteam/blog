@@ -1,6 +1,7 @@
 $( () => {
-    
-    $('#addMenu').on('click', () => {
+
+    $('#addMenu').on('submit', (event) => {
+        event.preventDefault();
 
         const ref = $('#ref').val();
         const name = $('#menuName').val();
