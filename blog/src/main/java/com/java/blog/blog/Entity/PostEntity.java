@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -29,19 +30,21 @@ public class PostEntity {
     private String content;
 
     @Column(nullable = false)
-    private Date regUserNo;
+    private Integer regUserNo;
 
     @Column(nullable = false)
-    private Date regDate;
+    private LocalDateTime regDate;
 
     @Column
-    private Date modUserNo;
-    private Date modDate;
+    private Integer modUserNo;
+
+    @Column
+    private LocalDateTime modDate;
 
     @Column(nullable = false)
     private Integer viewCount;
 
     @Column(nullable = false)
-    private char useYN;
+    private String useYN;
 
 }
