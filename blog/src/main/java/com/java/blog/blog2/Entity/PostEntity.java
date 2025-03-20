@@ -5,7 +5,7 @@
 //import lombok.Data;
 //import lombok.NoArgsConstructor;
 //
-//import java.util.Date;
+//import java.time.LocalDateTime;
 //
 //@Entity
 //@Table(name = "post")
@@ -29,19 +29,21 @@
 //    private String content;
 //
 //    @Column(nullable = false)
-//    private Date regUserNo;
+//    private Integer regUserNo;
 //
 //    @Column(nullable = false)
-//    private Date regDate;
+//    private LocalDateTime regDate;
 //
 //    @Column
-//    private Date modUserNo;
-//    private Date modDate;
+//    private Integer modUserNo;
+//
+//    @Column
+//    private LocalDateTime modDate;
 //
 //    @Column(nullable = false)
 //    private Integer viewCount;
 //
 //    @Column(nullable = false)
-//    private char useYN;
+//    private String useYN;
 //
 //}

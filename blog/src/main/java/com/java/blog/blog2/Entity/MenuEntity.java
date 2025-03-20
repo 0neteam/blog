@@ -33,6 +33,6 @@
 //    private Integer ref;
 //
 //    @Column(nullable = false)
-//    private Integer useYN;
+//    private String useYN;
 //
 //}
