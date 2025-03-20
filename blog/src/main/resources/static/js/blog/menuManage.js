@@ -1,22 +1,36 @@
 $( () => {
+    
     $('#addMenu').on('click', () => {
-        var ref = $('#ref').val();
-        var name = $('#menuName').val();
-        var depth =0;
-        if (name == "") {
+
+        // 입력값 디버깅
+        console.log("ref element:", $('#ref'));
+        console.log("menuName element:", $('#menuName'));
+
+        const ref = $('#ref').val();
+        const name = $('#menuName').val();
+
+
+        console.log("ref value:", ref);
+        console.log("name value:", name);
+
+
+        let depth =0;
+
+        if (!name) {
             alert("메뉴명을 입력해주세요.");
             return;
         }
 
-        if(ref !== 0){
+        if(ref != '0'){
             depth = 1;
         }
-
-        let data = {
-            ref: ref,
+        
+        const data = {
             name: name,
+            ref: ref,
             depth: depth
         };
+        console.log(data);
 
         $.ajax({
             url: '/menu/add',

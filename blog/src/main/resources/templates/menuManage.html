@@ -17,10 +17,10 @@
                     <option th:value="${eachMenu.no}" th:text="${eachMenu.name}"></option>
                 </th:block>
             </select>
-            <input type="text" id="menuName" class="form-control" placeholder="메뉴명을 입력하세요">
+            <input type="text" id="menuName" name="menuName" class="form-control" placeholder="메뉴명을 입력하세요">
             <button class="btn btn-success mt-2">추가</button>
+        </form>
     </div>
-    </form>
     <hr>
     <div>
         <label class="form-label">메뉴 삭제</label>

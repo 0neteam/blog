@@ -1,10 +1,12 @@
 package com.java.blog.blog.controller;
 
-import com.java.blog.blog.MenuService;
+import com.java.blog.blog.dto.MenuDTO;
+import com.java.blog.blog.service.MenuService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
@@ -22,7 +24,7 @@ public class MenuController {
 
     //새로운 메뉴 추가
     @PostMapping("/add")
-    public String add(){
-        return menuService.add();
+    public String add(@ModelAttribute MenuDTO menuDTO){
+        return menuService.add(menuDTO);
     }
 }
