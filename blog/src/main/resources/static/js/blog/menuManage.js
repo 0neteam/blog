@@ -2,17 +2,8 @@ $( () => {
     
     $('#addMenu').on('click', () => {
 
-        // 입력값 디버깅
-        console.log("ref element:", $('#ref'));
-        console.log("menuName element:", $('#menuName'));
-
         const ref = $('#ref').val();
         const name = $('#menuName').val();
-
-
-        console.log("ref value:", ref);
-        console.log("name value:", name);
-
 
         let depth =0;
 
@@ -21,11 +12,11 @@ $( () => {
             return;
         }
 
-        if(ref != '0'){
+        if(ref !== '0'){
             depth = 1;
         }
         
-        const data = {
+        let data = {
             name: name,
             ref: ref,
             depth: depth
@@ -36,14 +27,13 @@ $( () => {
             url: '/menu/add',
             type: 'POST',
             contentType: 'application/json',
-            data: JSON.stringify(data),
-            success: function (data) {
-                alert("메뉴가 추가되었습니다.");
-                location.reload();
-            },
-            error: function (data) {
+            data: JSON.stringify(data)
+        }).done(function () {
+            alert("메뉴가 추가되었습니다.");
+            location.reload();
+        }).fail(function (error) {
                 alert("메뉴 추가에 실패했습니다.");
-            }
         });
     });
+    
 });

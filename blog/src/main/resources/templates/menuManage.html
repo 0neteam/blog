@@ -10,7 +10,7 @@
     <h5>메뉴 편집</h5>
     <div>
         <form id="addMenu" th:action="@{/menu/add}" method="post">
-            <label for="newMenu" class="form-label">새 메뉴 추가</label>
+            <label class="form-label">새 메뉴 추가</label>
             <select class="form-select" name="ref" id="ref">
                 <option value="0">상위 항목 없음</option>
                 <th:block th:each="eachMenu : ${menuList}">

@@ -1,9 +1,10 @@
 package com.java.blog.blog.service;
 
 
-import com.java.blog.blog.dto.MenuDTO;
+import com.java.blog.blog.dto.MenuAddDTO;
 import com.java.blog.blog.entity.BoardEntity;
 import com.java.blog.blog.entity.MenuEntity;
+import com.java.blog.blog.repository.BoardRepository;
 import com.java.blog.blog.repository.MenuRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -16,6 +17,7 @@ import java.util.List;
 public class MenuServiceImp implements MenuService {
 
     private final MenuRepository menuRepository;
+    private final BoardRepository boardRepository;
 
     @Override
     public String getMenu(Model model) {
@@ -26,25 +28,27 @@ public class MenuServiceImp implements MenuService {
     }
 
     @Override
-    public String add(MenuDTO menuDTO) {
+    public String add(MenuAddDTO menuAddDTO) {
         //여기 코드들은 하드코딩된것들이 많음. 추후 수정필요.
-        System.out.printf("menuDTO 의 값은: "+menuDTO+" 끝 ");
-        BoardEntity boardEntity = new BoardEntity();
-        boardEntity.setNo(1);
 
-        MenuEntity menuEntity = MenuEntity.builder()
-                .board(boardEntity)
-                .orderNo(1)
-                .depth(menuDTO.getDepth())
-                .name(menuDTO.getName())
-                .ref(menuDTO.getRef())
-                .useYN('Y')
-                .build();
-        System.out.printf("menuEntity 의 값은: "+menuEntity+" 끝 ");
-        menuRepository.save(menuEntity);
+        //BoardEntity boardEntity = new BoardEntity();
+        BoardEntity boardEntity = boardRepository.findByNo(2);
 
-//        MenuEntity menuEntity = menuRepository.save(menuDTO.toEntity());
+        System.out.printf("\n boardEntity 값은 "+boardEntity+"\n");
+        System.out.printf("\n menuAddDTO 값은 "+menuAddDTO+"\n");
 
+        menuRepository.save(
+                MenuEntity.builder()
+                        .board(boardEntity) //타입이 BoardEntity 이어야함.
+                        .name(menuAddDTO.getName())
+                        .ref(menuAddDTO.getRef())
+                        .depth(menuAddDTO.getDepth())
+                        .orderNo(menuAddDTO.getOrderNo())
+                        .build()
+        );
+        //MenuEntity menuEntity = menuRepository.save(menuAddDTO.toEntity());
+
+        // 또는 적절한 뷰 이름 반환하도록 수정하지 않으면 뻗음.
         return "";
     }
 }
