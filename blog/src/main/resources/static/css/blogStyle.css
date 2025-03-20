@@ -3,33 +3,114 @@ body {
   font-family: 'Arial', sans-serif;
   background-color: #f7f7f7;
   color: #333;
+  margin: 0;
+  padding: 0;
 }
 
+/* 메인 콘텐츠 */
+.main-content {
+  padding-right: 0;
+  opacity: 0;
+  animation: fadeIn 1s ease-out forwards;
+  transform: translateY(20px);
+}
+
+@keyframes fadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.layout-content {
+    max-width: 100%;  /* 부모 컨테이너의 너비를 100%로 확장 */
+    margin: 0 auto;  /* 가운데 정렬 */
+}
+
+/* 헤더 */
 header {
   background-color: #fff;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  padding: 15px 20px;
+  animation: slideDown 0.6s ease-out;
 }
 
+@keyframes slideDown {
+  from {
+    transform: translateY(-50px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+/* 컨테이너 */
+.container {
+  display: flex;
+  flex-wrap: wrap; /* align-items: flex-start로 수정하여 사이드바가 위로 배치되도록 */
+  justify-content: center;
+  padding: 0 15px;  /* 양 옆 여백을 조금 추가 */
+  max-width: 1200px; /* 최대 너비 제한 */
+  width: 100%;  /* 화면 너비의 100%를 차지 */
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+}
+
+.col-md-9 {
+  flex: 1;  /* 너비를 동적으로 설정하여 오른쪽 영역이 늘어나게 합니다. */
+  padding: 0 15px;
+}
+
+/* 제목 스타일 */
 h1 {
   font-size: 28px;
   color: #333;
+  margin: 0;
 }
 
-/* 블로그 게시물 카드 스타일 */
+/* 블로그 게시물 카드 */
 .card {
   border: none;
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
-  transition: transform 0.3s;
+  transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out, background-color 0.3s ease-in-out;
+  margin-bottom: 20px;
+  opacity: 0;
+  transform: translateY(20px);
+  animation: cardFadeIn 0.7s ease-out forwards;
+  background-color: #ffffff;
+  width: 900px;  /* 카드의 너비를 넓게 설정 (기존 100%에서 변경) */
+  max-width: 100%;  /* 오른쪽으로 늘어날 때도 최대 너비를 제한 */
+}
+
+.card-body {
+  display: flex;
+  justify-content: space-between; /* 왼쪽 내용은 그대로 두고, 오른쪽 내용은 늘어날 수 있게 설정 */
+  align-items: center;
+}
+
+@keyframes cardFadeIn {
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 .card:hover {
-  transform: translateY(-5px);
+  transform: translateY(-10px) scale(1.05);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+  background-color: #f0f0f0;
 }
 
 .card-title {
   font-size: 20px;
   color: #333;
+  margin: 0;
 }
 
 .card-text {
@@ -43,131 +124,54 @@ aside {
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 20px;
+  margin-top: 80px;
+  position: fixed;
+  top: 0;
+  right: -300px;
+  z-index: 1000;
+  animation: slideInRight 0.6s ease-out forwards;
+  width: 300px;
 }
 
-.list-group-item {
-  background-color: #f8f9fa;
-  border: 1px solid #ddd;
-  border-radius: 5px;
-  margin-bottom: 10px;
-  font-size: 16px;
+@keyframes slideInRight {
+  to {
+    right: 0;
+  }
 }
 
-.list-group-item.active {
-  background-color: #007bff;
-  color: white;
-}
-
-/* 카테고리 편집 모달 */
-.modal-content {
-  border-radius: 10px;
-}
-
-.modal-header {
-  background-color: #f1f1f1;
-  border-bottom: 1px solid #ddd;
-}
-
-.modal-body {
-  font-size: 16px;
-}
-
-.modal-body ul {
-  margin-bottom: 10px;
-}
-
-button {
-  transition: background-color 0.3s;
-}
-
-button:hover {
-  background-color: #0056b3;
-  color: white;
-}
-
-form .form-control {
-  border-radius: 5px;
-}
-
-select.form-select {
-  border-radius: 5px;
-}
-
-textarea.form-control {
-  border-radius: 5px;
-  height: 300px;
-}
-
-/* 버튼 스타일 */
-.btn-danger, .btn-primary {
-  border-radius: 5px;
-}
-
-.d-flex.justify-content-end button {
-  margin-left: 10px;
-}
-
-/* 반응형 디자인 */
+/* 반응형 디자인: 작은 화면에서 사이드바와 메인 콘텐츠가 겹치지 않도록 조정 */
 @media (max-width: 768px) {
-  header {
-    flex-direction: column;
-    text-align: center;
-  }
-
   .container {
-    padding: 0 15px;
+    flex-direction: column; /* 세로로 배치 */
+    padding: 0 15px; /* 여백 추가 */
   }
 
-  .col-md-9, .col-md-3 {
-    width: 100%;
-    margin-bottom: 20px;
+  /* 메인 콘텐츠 */
+  .main-content {
+    width: 100%; /* 작은 화면에서 메인 콘텐츠가 100% 너비를 차지하도록 설정 */
+    padding-right: 0;
   }
 
+  /* 사이드바 */
+  aside {
+    position: relative; /* 작은 화면에서 사이드바를 상대 위치로 변경하여 다른 레이아웃에서 깔끔하게 표시 */
+    width: 100%; /* 사이드바가 화면의 100%를 차지하도록 설정 */
+    margin-top: 20px; /* 사이드바의 여백 추가 */
+  }
+
+  .card {
+    margin-left: 0;
+    width: 100%; /* 작은 화면에서 카드도 100% 너비로 설정 */
+  }
+
+  /* 카테고리 리스트 */
+  #categoryList .list-group-item {
+    font-size: 1rem; /* 글씨 크기 조정 */
+  }
+
+  /* 모달 */
   .modal-body input,
   .modal-body textarea {
-    width: 100%;
+    width: 100%; /* 입력 요소들 너비 100%로 설정 */
   }
-}
-
-/* 카테고리 영역 스타일 */
-#categoryList {
-  padding-left: 20px;
-}
-
-#categoryList .list-group-item {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-#categoryList .form-check-input {
-  margin-right: 10px;
-}
-
-#categoryList .list-group-item:hover {
-  background-color: #f8f9fa;
-}
-
-#categoryList li {
-  font-size: 1.1rem;
-  margin-bottom: 8px;
-}
-
-.modal-body {
-  font-family: Arial, sans-serif;
-}
-
-.modal-header {
-  background-color: #f8f9fa;
-  border-bottom: 1px solid #dee2e6;
-}
-
-.modal-title {
-  font-size: 1.25rem;
-  font-weight: bold;
-}
-
-.modal-body label {
-  font-size: 1rem;
-  margin-bottom: 10px;
 }
