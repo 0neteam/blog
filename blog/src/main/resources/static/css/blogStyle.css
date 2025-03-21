@@ -73,6 +73,12 @@ h1 {
   margin: 0;
 }
 
+.mt-auto {
+    position: -webkit-sticky; /* Safari 지원 */
+    position: sticky;
+    bottom: 10px;  /* 화면 하단에서의 여백 */
+}
+
 /* 블로그 게시물 카드 */
 .card {
   border: none;

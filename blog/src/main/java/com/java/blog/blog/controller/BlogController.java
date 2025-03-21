@@ -1,6 +1,6 @@
 package com.java.blog.blog.controller;
 
-import com.java.blog.blog.BlogService;
+import com.java.blog.blog.service.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
