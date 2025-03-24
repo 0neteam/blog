@@ -2,12 +2,14 @@ package com.java.blog.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Entity
 @Table(name = "menu")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class MenuEntity {
@@ -33,6 +35,6 @@ public class MenuEntity {
     private Integer ref;
 
     @Column(nullable = false)
-    private String useYN;
+    private char useYN;
 
 }
