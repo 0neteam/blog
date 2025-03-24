@@ -5,36 +5,62 @@ $(() => {
 
         const ref = $('#ref').val();
         const name = $('#menuName').val();
-
-        let depth = 0;
-
-        if (!name) {
-            alert("메뉴명을 입력해주세요.");
-            return;
-        }
-
+        //ref 값이 0이 아니면 부모메뉴가 아님
+        //ref값이 0이면 부모메뉴 설정으로
         if (ref !== '0') {
-            depth = 1;
+            let depth = 1;
+
+            if (!name) {
+                alert("메뉴명을 입력해주세요.");
+                return;
+            }
+
+            let data = {
+                name: name,
+                ref: ref,
+                depth: depth
+            };
+            console.log(data);
+    
+            $.ajax({
+                url: '/menu/add',
+                type: 'POST',
+                contentType: 'application/json',
+                data: JSON.stringify(data)
+            }).done(function () {
+                alert("메뉴가 추가되었습니다.");
+                location.reload();
+            }).fail(function (error) {
+                alert("메뉴 추가에 실패했습니다.");
+            });
         }
+        //정신 맑을때 코드 수정해야함. '25.03.24 20:35 강승우
+        // else{
+        //     if(!name){
+        //         alert("그룹명을 입력해주세요.");
+        //         return;
+        //     }
+        //     let depth = 0;
 
-        let data = {
-            name: name,
-            ref: ref,
-            depth: depth
-        };
-        console.log(data);
+        //     let data = {
+        //         name: name,
+        //         ref: ref,
+        //         depth: depth
+        //     };
+        //     console.log(data);
 
-        $.ajax({
-            url: '/menu/add',
-            type: 'POST',
-            contentType: 'application/json',
-            data: JSON.stringify(data)
-        }).done(function () {
-            alert("메뉴가 추가되었습니다.");
-            location.reload();
-        }).fail(function (error) {
-            alert("메뉴 추가에 실패했습니다.");
-        });
+        //     $.ajax({
+        //         url: '/menu/add',
+        //         type: 'POST',
+        //         contentType: 'application/json',
+        //         data: JSON.stringify(data)
+        //     }).done(function () {
+        //         alert("그룹이 추가되었습니다.");
+        //         location.reload();
+        //     }).fail(function (error) {
+        //         alert("그룹 추가에 실패했습니다.");
+        //     });
+        // }
     });
 
     //메뉴삭제
