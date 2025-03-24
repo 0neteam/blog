@@ -3,6 +3,7 @@ package com.java.blog.blog.controller;
 import com.java.blog.blog.service.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -12,7 +13,7 @@ import org.springframework.web.bind.annotation.*;
 // blog/menu/postDetail
 @RequestMapping("/post")
 @RequiredArgsConstructor
-@Controller
+@Controller(value = "blogController1")
 public class BlogController {
 //    @GetMapping("/blogList")
 //    public String blogList(){
@@ -24,6 +25,7 @@ public class BlogController {
 //        return "blogPost";
 //    }
 
+    @Qualifier(value = "blogServiceImp1")
     private final BlogService blogService;
 
     @GetMapping("/detail")

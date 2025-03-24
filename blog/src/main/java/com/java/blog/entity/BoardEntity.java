@@ -1,4 +1,4 @@
-package com.java.blog.blog.entity;
+package com.java.blog.entity;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;

@@ -1,13 +1,12 @@
 package com.java.blog.blog.repository;
 
-import com.java.blog.blog.entity.MenuEntity;
-import com.java.blog.blog.entity.PostEntity;
+import com.java.blog.entity.MenuEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
 
-@Repository
+@Repository(value = "menuRepository1")
 public interface MenuRepository extends JpaRepository<MenuEntity, Integer> {
     List<MenuEntity> findByUseYN(String useYN);
     //boardNo orderNo ref depth useYN

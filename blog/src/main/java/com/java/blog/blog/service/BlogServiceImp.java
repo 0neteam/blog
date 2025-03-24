@@ -1,12 +1,12 @@
 package com.java.blog.blog.service;
 
-import com.java.blog.blog.entity.MenuEntity;
-import com.java.blog.blog.entity.PostEntity;
+import com.java.blog.entity.MenuEntity;
+import com.java.blog.entity.PostEntity;
 import com.java.blog.blog.repository.MenuRepository;
 import com.java.blog.blog.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.data.jpa.repository.Modifying;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
@@ -14,9 +14,12 @@ import java.time.LocalDateTime;
 import java.util.List;
 
 @RequiredArgsConstructor
-@Service
+@Service(value = "blogServiceImp1")
 public class BlogServiceImp implements BlogService {
+
+    @Qualifier(value = "postRepository1")
     private final PostRepository postRepository;
+    @Qualifier(value = "menuRepository1")
     private final MenuRepository menuRepository;
 
     @Override
