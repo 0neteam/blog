@@ -45,3 +45,10 @@ springdoc:
 logging.level.org:
   springframework.security: trace
   hibernate.sql: debug
+
+jwt:
+  keys-uri: http://localhost:8000/oauth/.well-known/jwks.json
+
+rsa:
+  public-key: classpath:keys/public.pem
+  private-key: classpath:keys/private.pem
