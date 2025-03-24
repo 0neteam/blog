@@ -6,7 +6,7 @@ import org.springframework.ui.Model;
 public interface BlogService {
     String postDetail(Model model, Integer no);
 
-    String deletePost(Integer no);
+    char deletePost(Integer no);
 
     String getMenu(Model model);
 }

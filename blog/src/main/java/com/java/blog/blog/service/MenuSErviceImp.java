@@ -20,7 +20,7 @@ public class MenuSErviceImp implements MenuService {
 
     @Qualifier(value = "menuRepository1")
     private final MenuRepository menuRepository;
-    @Qualifier(value = "BoardRepository1")
+    @Qualifier(value = "boardRepository1")
     private final BoardRepository boardRepository;
 
     @Override

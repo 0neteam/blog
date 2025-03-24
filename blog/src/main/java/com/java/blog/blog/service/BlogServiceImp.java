@@ -32,10 +32,10 @@ public class BlogServiceImp implements BlogService {
 
     @Modifying
     @Override
-    public String deletePost(Integer no) {
+    public char deletePost(Integer no) {
         PostEntity postEntity = postRepository.findById(no).orElseThrow();
         postEntity.setModDate(LocalDateTime.now());//삭제도 일종의 수정이니 삭제일 입력
-        postEntity.setUseYN("N");
+        postEntity.setUseYN('N');
         postEntity = postRepository.save(postEntity);
         //System.out.printf("postEntity의 값은: "+postEntity.getUseYN());
         return postEntity.getUseYN(); // Y -> 삭제실패, N -> 삭제성공

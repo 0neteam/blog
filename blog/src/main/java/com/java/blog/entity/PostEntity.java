@@ -1,9 +1,11 @@
 package com.java.blog.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -34,16 +36,18 @@ public class PostEntity {
     @Column(nullable = false)
     private LocalDateTime regDate;
 
+    @Column(nullable = false)
+    private Integer viewCount;
+
     @Column
     private Integer modUserNo;
 
     @Column
+    @CreationTimestamp
+    @JsonFormat(pattern = "yyyy.MM.dd.")
     private LocalDateTime modDate;
 
     @Column(nullable = false)
-    private Integer viewCount;
-
-    @Column(nullable = false)
-    private String useYN;
+    private char useYN;
 
 }
