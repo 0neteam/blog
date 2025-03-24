@@ -73,12 +73,6 @@ h1 {
   margin: 0;
 }
 
-.mt-auto {
-    position: -webkit-sticky; /* Safari 지원 */
-    position: sticky;
-    bottom: 10px;  /* 화면 하단에서의 여백 */
-}
-
 /* 블로그 게시물 카드 */
 .card {
   border: none;
@@ -130,13 +124,13 @@ aside {
   border-radius: 10px;
   box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
   padding: 20px;
-  margin-top: 80px;
-  position: fixed;
-  top: 0;
+  /* margin-top: 80px; */
+  /* position: fixed; */
+  /* top: 0;
   right: -300px;
-  z-index: 1000;
+  z-index: 1000; */
   animation: slideInRight 0.6s ease-out forwards;
-  width: 300px;
+  /* width: 300px; */
 }
 
 @keyframes slideInRight {

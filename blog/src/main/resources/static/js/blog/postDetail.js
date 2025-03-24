@@ -8,16 +8,17 @@ $( () => {
         //url에 있는 no 값을 가져옴.
 
         $.ajax({
-            url: '/deletePost',
+            url: 'delete',
             type: 'POST',
             data: {no: postNo},
             success: (response) => {
                 if(response === "N"){
                     alert("삭제되었습니다.");
                     window.location.href = "/blogList";
-                }else{
-                    alert("삭제 실패");
                 }
+            },
+            error: (response) => {
+                alert("삭제에 실패했습니다.");
             }
         })
 

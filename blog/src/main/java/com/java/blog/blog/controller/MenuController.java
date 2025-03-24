@@ -20,9 +20,9 @@ public class MenuController {
         return menuService.getMenu(model);
     }
 
-    //새로운 메뉴 추가
-    @PostMapping("/add")
-    public String add(){
-        return menuService.add();
-    }
+//    //새로운 메뉴 추가
+//    @PostMapping("/add")
+//    public String add(){
+//        return menuService.add();
+//    }
 }
