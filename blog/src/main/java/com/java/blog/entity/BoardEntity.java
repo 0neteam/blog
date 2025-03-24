@@ -5,6 +5,7 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -25,7 +26,7 @@ public class BoardEntity {
     private String domain;
 
     @Column(nullable = false)
-    private Date regDate;
+    private LocalDateTime regDate;
 
     @Column(nullable = false)
     private String description;

@@ -54,7 +54,7 @@ public class BlogServiceImp implements BlogService {
         depth(메뉴레벨)로 sub메뉴 정렬
         useYN을 참고하여 Y만 나오게 할것.
          */
-        List<MenuEntity> menuEntities = menuRepository.findByBoardNoAndUseYN(1, "Y");
+        List<MenuEntity> menuEntities = menuRepository.findByBoardNoAndUseYN(1, 'Y');
         //System.out.printf("list of menuEntities: "+menuEntities+"\n");
         model.addAttribute("menuList",menuEntities);
         return "";

@@ -1,6 +1,6 @@
 package com.java.blog.blog.dto;
 
-import com.java.blog.blog.entity.MenuEntity;
+import com.java.blog.entity.MenuEntity;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
