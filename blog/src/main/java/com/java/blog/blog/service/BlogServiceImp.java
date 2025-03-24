@@ -32,10 +32,10 @@ public class BlogServiceImp implements BlogService {
 
     @Modifying
     @Override
-    public String deletePost(Integer no) {
+    public char deletePost(Integer no) {
         PostEntity postEntity = postRepository.findById(no).orElseThrow();
         postEntity.setModDate(LocalDateTime.now());//삭제도 일종의 수정이니 삭제일 입력
-        postEntity.setUseYN("N");
+        postEntity.setUseYN('N');
         postEntity = postRepository.save(postEntity);
         //System.out.printf("postEntity의 값은: "+postEntity.getUseYN());
         return postEntity.getUseYN(); // Y -> 삭제실패, N -> 삭제성공
@@ -54,7 +54,7 @@ public class BlogServiceImp implements BlogService {
         depth(메뉴레벨)로 sub메뉴 정렬
         useYN을 참고하여 Y만 나오게 할것.
          */
-        List<MenuEntity> menuEntities = menuRepository.findByBoardNoAndUseYN(1, "Y");
+        List<MenuEntity> menuEntities = menuRepository.findByBoardNoAndUseYN(1, 'Y');
         //System.out.printf("list of menuEntities: "+menuEntities+"\n");
         model.addAttribute("menuList",menuEntities);
         return "";

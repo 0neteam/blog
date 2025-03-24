@@ -2,7 +2,6 @@ package com.java.blog.blog.controller;
 
 import com.java.blog.blog.service.BlogService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -40,7 +39,7 @@ public class BlogController {
 
     @ResponseBody
     @PostMapping("delete")
-    public String deletePost(@RequestParam("no") Integer no){
+    public char deletePost(@RequestParam("no") Integer no){
         return blogService.deletePost(no);
     }
 

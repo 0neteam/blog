@@ -1,10 +1,13 @@
 package com.java.blog.entity;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.hibernate.annotations.CreationTimestamp;
 
+import java.time.LocalDateTime;
 import java.util.Date;
 
 @Entity
@@ -18,6 +21,12 @@ public class BoardEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Integer no;
 
+    @Column(nullable = false)
+    private Integer regUserNo;
+
+    @Column(nullable = false)
+    private Integer type;
+
     @Column(nullable = false, length = 30)
     private String name;
 
@@ -25,12 +34,14 @@ public class BoardEntity {
     private String domain;
 
     @Column(nullable = false)
-    private Date regDate;
+    @CreationTimestamp
+    @JsonFormat(pattern = "yyyy.MM.dd.")
+    private LocalDateTime regDate;
 
     @Column(nullable = false)
     private String description;
 
     @Column(nullable = false, columnDefinition = "CHAR")
-    private String useYN;
+    private char useYN;
 
 }

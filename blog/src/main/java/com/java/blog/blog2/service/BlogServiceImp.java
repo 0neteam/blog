@@ -53,7 +53,7 @@ public class BlogServiceImp implements BlogService {
         post.setMenu(menu);
         post.setRegDate(LocalDateTime.now());
         post.setViewCount(0);
-        post.setUseYN("Y");
+        post.setUseYN('Y');
 
         postRepository.save(post);
     }
