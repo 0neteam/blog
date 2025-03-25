@@ -14,7 +14,7 @@
             <label class="form-label">새 메뉴 추가</label>
             <select class="form-select" name="ref" id="ref">
                 <option value="0">상위 항목 없음</option>
-                <th:block th:each="eachMenu : ${menuList}">
+                <th:block th:each="eachMenu : ${menuList}" th:if="${eachMenu.depth == 0}">
                     <option th:value="${eachMenu.no}" th:text="${eachMenu.name}"></option>
                 </th:block>
             </select>
@@ -27,11 +27,22 @@
         <label class="form-label">메뉴 삭제</label>
         <ul class="list-group" id="MenuList">
             <tr th:each="eachMenu : ${menuList}">
-                <li class="list-group-item">
-                    <input type="checkbox" class="form-check-input me-2 menuCB">
+                <ul class="list-group-item">
+                    <!-- <input type="checkbox" class="form-check-input me-2 menuCB"> -->
                     <input type="hidden" class="menuNo" th:value="${eachMenu.no}">
-                    <p class="menuName" th:text="${eachMenu.name}"></p>
-                </li>
+                    <!-- 테스트코드 -->
+                    <div th:if="${eachMenu.depth == 0}">
+                        <input type="checkbox" class="form-check-input me-2 menuCB">
+                        <p class="menuName fw-bold" th:text="${eachMenu.name}"></p>
+                         <div th:each="child : ${eachMenu.children}">
+                            <input type="checkbox" class="form-check-input me-2 menuCB">
+                            <li class="menuName" th:text="${child.name}"></li>
+                         </div>
+                        
+                        </li>
+                    </div>
+                    <!-- 테스트코드 -->
+                </ul>
             </tr>
         </ul>
 

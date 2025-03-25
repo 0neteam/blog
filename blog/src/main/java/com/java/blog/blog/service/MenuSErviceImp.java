@@ -2,6 +2,7 @@ package com.java.blog.blog.service;
 
 
 import com.java.blog.blog.dto.MenuAddDTO;
+import com.java.blog.blog.dto.MenuDTO;
 import com.java.blog.blog.dto.MenuDeleteDTO;
 import com.java.blog.blog.repository.BoardRepository;
 import com.java.blog.entity.BoardEntity;
@@ -12,7 +13,9 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -25,9 +28,36 @@ public class MenuSErviceImp implements MenuService {
 
     @Override
     public String getMenu(Model model) {
-        List<MenuEntity> menuEntities = menuRepository.findByBoardNoAndUseYN(1, 'Y');
-        //System.out.printf("list of menuEntities: "+menuEntities+"\n");
-        model.addAttribute("menuList",menuEntities);
+        Optional<BoardEntity> boardSelect = boardRepository.findByTypeAndDomain(2, "blog1");
+        if (boardSelect.isEmpty()) {
+            throw new IllegalArgumentException("Board not found for domain!!");
+        }
+
+        BoardEntity board =boardSelect.get();
+        Integer boardNo = board.getNo();
+
+        List<MenuEntity> menuEntities = menuRepository.findByBoardNoAndRefAndUseYNOrderByOrderNoAsc(boardNo,0,'Y');
+        List<MenuDTO> filterMenus = new ArrayList<>();
+
+        for(MenuEntity menuEntity : menuEntities){
+            List<MenuEntity> filteredChildren = new ArrayList<>();
+            for (MenuEntity child : menuEntity.getChildren()){
+                if(child.getUseYN() == 'Y'){
+                    filteredChildren.add(child);
+                }
+            }
+            filterMenus.add(new MenuDTO(
+                    menuEntity.getNo(),
+                    menuEntity.getBoard().getNo(),
+                    menuEntity.getOrderNo(),
+                    menuEntity.getDepth(),
+                    menuEntity.getName(),
+                    menuEntity.getRef(),
+                    menuEntity.getUseYN(),
+                    filteredChildren // 필터링된 children 리스트
+            ));
+        }
+        model.addAttribute("menuList",filterMenus);
         return "menumanage";
     }
 
