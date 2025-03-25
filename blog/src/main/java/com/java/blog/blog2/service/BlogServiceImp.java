@@ -72,8 +72,12 @@ public class BlogServiceImp implements BlogService {
         post.setRegDate(LocalDateTime.now());
         post.setViewCount(0);
         post.setUseYN('Y');
+<<<<<<< HEAD
         post.setMenu(menu);
         // 만약 PostEntity에 BoardEntity와의 연관관계가 있다면 여기에 설정할 수 있습니다.
+=======
+
+>>>>>>> 9df0473219adfc8aee6e8c63b7718c6bff7cccfb
         postRepository.save(post);
     }
 
