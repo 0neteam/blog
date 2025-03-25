@@ -1,3 +1,4 @@
+// Utils.java
 package com.java.blog.config;
 
 import com.nimbusds.jose.jwk.JWK;
@@ -17,43 +18,44 @@ import java.util.List;
 public class Utils {
 
   private final JwtDecoder jwtDecoder;
-
   private final JWKSet jwkSet;
 
-  public String getUserNo (HttpServletRequest request) {
-
+  public String getUserNo(HttpServletRequest request) {
     String userNo = "";
-
-    //쿠키 값 확인
     Cookie[] cookies = request.getCookies();
-    //
     if (cookies != null) {
       for (Cookie cookie : cookies) {
         if ("access_token".equals(cookie.getName())) {
-          List<JWK> jwks = jwkSet.getKeys();
           String token = cookie.getValue();
-          System.out.println("token = " + token);
-
-          try{
-
-            // JwtDecoder를 사용하여 토큰 디코딩
+          try {
             Jwt jwt = jwtDecoder.decode(token);
-            // 🔹 디버깅 로그 출력 (토큰 클레임 및 만료 시간)
-            System.out.println("Cafe Decoded JWT claims: " + jwt.getClaims());
             userNo = (String) jwt.getClaims().get("userNo");
-            System.out.println("Cafe controller userNo : " + userNo);
-
-
           } catch (JwtException e) {
-            // 토큰 처리 중 오류가 발생한 경우 로그아웃처리
-            return "redirect:http://d.0neteam.co.kr:9000/oauth2/logout";
+            return null;
           }
-
         }
       }
     }
-
     return userNo;
   }
 
+  // 추가: JWT 토큰에서 사용자 이름(name) 클레임을 추출하는 메서드
+  public String getUserName(HttpServletRequest request) {
+    String userName = "";
+    Cookie[] cookies = request.getCookies();
+    if (cookies != null) {
+      for (Cookie cookie : cookies) {
+        if ("access_token".equals(cookie.getName())) {
+          String token = cookie.getValue();
+          try {
+            Jwt jwt = jwtDecoder.decode(token);
+            userName = (String) jwt.getClaims().get("name");
+          } catch (JwtException e) {
+            return null;
+          }
+        }
+      }
+    }
+    return userName;
+  }
 }

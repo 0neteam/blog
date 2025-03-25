@@ -6,12 +6,41 @@
 
 <head>
   <link rel="stylesheet" href="/css/blogStyle.css">
+
+  <script>
+    document.addEventListener("DOMContentLoaded", function() {
+      const createBlogBtns = document.querySelectorAll("#createBlogBtn");
+      createBlogBtns.forEach(button => {
+        button.addEventListener("click", function () {
+          fetch("/blog/create", { method: "POST" })
+            .then(response => {
+              if (!response.ok) {
+                throw new Error("네트워크 응답에 문제가 있습니다.");
+              }
+              return response.text();
+            })
+            .then(domain => {
+              // 반환받은 domain은 예: "blog/list/default"
+              window.location.href = "/" + domain;
+            })
+            .catch(error => {
+              alert("블로그 생성에 실패했습니다.");
+              console.error("Error:", error);
+            });
+        });
+      });
+    });
+  </script>
+
+
+
 </head>
 
 <div layout:fragment="content">
   <div class="container mt-4">
     <div class="row d-flex flex-wrap">
       <main class="col-md-9">
+                      <button id="createBlogBtn" class="btn btn-primary">내 블로그 생성하기</button>
         <section id="post-list">
           <!-- useYN 값을 체크하여 조건에 맞는 글만 출력 -->
           <div th:each="post, iterStat : ${posts}">
@@ -21,6 +50,7 @@
                 <div class="card mb-3">
                   <div class="card-body d-flex justify-content-between align-items-center">
                     <div>
+                      <!-- 버튼을 반복되는 각 포스트마다 표시 -->
                       <!-- ✅ 카테고리(메뉴명) 추가 -->
                       <h6 class="text-primary" th:text="${post.menu.name}">카테고리</h6>
                       <h5 class="card-title" th:text="${post.title}">글 제목</h5>

@@ -31,3 +31,8 @@ build/
 
 ### VS Code ###
 .vscode/
+.env
+
+# RSA 키 폴더 무시
+/src/main/resources/keys/
+
