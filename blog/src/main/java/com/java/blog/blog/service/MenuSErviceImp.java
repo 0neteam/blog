@@ -88,15 +88,20 @@ public class MenuSErviceImp implements MenuService {
     }
 
     @Override
-    public String delete(List<MenuDeleteDTO> menuDeleteDTOS) {
-
-        for (MenuDeleteDTO menuAddDTOS : menuDeleteDTOS) {
-            //System.out.printf("JSON 으로부터 받은 값 목록: "+menuAddDTOS+"\n");
-
-            MenuEntity menuEntity = menuRepository.findByNo(menuAddDTOS.getNo());
+    public String delete(MenuDTO menuDTO) {
+            MenuEntity menuEntity = menuRepository.findByNo(menuDTO.getNo());
             menuEntity.setUseYN('N');
             menuRepository.save(menuEntity);
-        }
+
+        return "menumanage";
+    }
+
+    @Override
+    public String edit(MenuDTO menuDTO) {
+        MenuEntity menuEntity = menuRepository.findByNo(menuDTO.getNo());
+        menuEntity.setName(menuDTO.getName());
+        menuEntity.setRef(menuDTO.getRef());
+        menuRepository.save(menuEntity);
         return "menumanage";
     }
 

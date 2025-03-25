@@ -1,6 +1,7 @@
 package com.java.blog.blog.service;
 
 import com.java.blog.blog.dto.MenuAddDTO;
+import com.java.blog.blog.dto.MenuDTO;
 import com.java.blog.blog.dto.MenuDeleteDTO;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -14,5 +15,7 @@ public interface MenuService {
 
     String add(MenuAddDTO menuAddDTO);
 
-    String delete(List<MenuDeleteDTO> menuDeleteDTOS);
+    String delete(MenuDTO menuDTO);
+
+    String edit(MenuDTO menuDTO);
 }

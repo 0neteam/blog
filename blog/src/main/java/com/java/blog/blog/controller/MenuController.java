@@ -1,6 +1,7 @@
 package com.java.blog.blog.controller;
 
 import com.java.blog.blog.dto.MenuAddDTO;
+import com.java.blog.blog.dto.MenuDTO;
 import com.java.blog.blog.dto.MenuDeleteDTO;
 import com.java.blog.blog.service.MenuService;
 import lombok.RequiredArgsConstructor;
@@ -33,7 +34,13 @@ public class MenuController {
 
     //메뉴 제거
     @PostMapping("/delete")
-    public String delete(@RequestBody List<MenuDeleteDTO> menuDeleteDTOS){
-        return menuService.delete(menuDeleteDTOS);
+    public String delete(@RequestBody MenuDTO menuDTO){
+        return menuService.delete(menuDTO);
+    }
+
+    //메뉴수정
+    @PostMapping("/edit")
+    public String edit(@RequestBody MenuDTO menuDTO){
+        return menuService.edit(menuDTO);
     }
 }
