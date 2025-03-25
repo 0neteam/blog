@@ -40,12 +40,9 @@ public class MenuEntity {
     @Column(nullable = false)
     private char useYN;
 
-<<<<<<< HEAD
     @OneToMany
     @JoinColumn(name = "ref")
     @OrderBy("orderNo asc")
     private List<MenuEntity> children = new ArrayList<>();
 
-=======
->>>>>>> 9df0473219adfc8aee6e8c63b7718c6bff7cccfb
 }

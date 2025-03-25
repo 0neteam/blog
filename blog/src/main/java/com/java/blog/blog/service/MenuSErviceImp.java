@@ -8,6 +8,7 @@ import com.java.blog.blog.repository.BoardRepository;
 import com.java.blog.entity.BoardEntity;
 import com.java.blog.entity.MenuEntity;
 import com.java.blog.blog.repository.MenuRepository;
+import lombok.AllArgsConstructor;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -17,7 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-@RequiredArgsConstructor
+@AllArgsConstructor
 @Service
 public class MenuSErviceImp implements MenuService {
 
@@ -26,84 +27,81 @@ public class MenuSErviceImp implements MenuService {
     @Qualifier(value = "boardRepository1")
     private final BoardRepository boardRepository;
 
+
+    // 메뉴 리스트 가져오기
     @Override
-    public String getMenu(Model model) {
-        Optional<BoardEntity> boardSelect = boardRepository.findByTypeAndDomain(2, "blog1");
+    public String getMenu(String domain, Model model) {
+        Optional<BoardEntity> boardSelect = boardRepository.findByTypeAndDomain(2, domain);
         if (boardSelect.isEmpty()) {
-            throw new IllegalArgumentException("Board not found for domain!!");
+            throw new IllegalArgumentException("Board not found for domain: " + domain);
         }
-
-        BoardEntity board =boardSelect.get();
+        BoardEntity board = boardSelect.get();
         Integer boardNo = board.getNo();
-
-        List<MenuEntity> menuEntities = menuRepository.findByBoardNoAndRefAndUseYNOrderByOrderNoAsc(boardNo,0,'Y');
+        List<MenuEntity> menus = menuRepository.findByBoardNoAndRefAndUseYNOrderByOrderNoAsc(boardNo, 0, 'Y');
         List<MenuDTO> filterMenus = new ArrayList<>();
 
-        for(MenuEntity menuEntity : menuEntities){
+        for (MenuEntity menu : menus) {
             List<MenuEntity> filteredChildren = new ArrayList<>();
-            for (MenuEntity child : menuEntity.getChildren()){
-                if(child.getUseYN() == 'Y'){
+            for (MenuEntity child : menu.getChildren()) {
+                if (child.getUseYN() == 'Y') {
                     filteredChildren.add(child);
                 }
             }
             filterMenus.add(new MenuDTO(
-                    menuEntity.getNo(),
-                    menuEntity.getBoard().getNo(),
-                    menuEntity.getOrderNo(),
-                    menuEntity.getDepth(),
-                    menuEntity.getName(),
-                    menuEntity.getRef(),
-                    menuEntity.getUseYN(),
+                    menu.getNo(),
+                    menu.getBoard().getNo(),
+                    menu.getOrderNo(),
+                    menu.getDepth(),
+                    menu.getName(),
+                    menu.getRef(),
+                    menu.getUseYN(),
                     filteredChildren // 필터링된 children 리스트
             ));
         }
+        model.addAttribute("domain",domain);
         model.addAttribute("menuList",filterMenus);
         return "menumanage";
     }
 
     @Override
-    public String add(MenuAddDTO menuAddDTO) {
-        //여기 코드들은 하드코딩된것들이 많음. 추후 수정필요.
+    public String add(String domain, MenuDTO menuDTO) {
+        Optional<BoardEntity> boardSelect = boardRepository.findByTypeAndDomain(2, domain);
+        if (boardSelect.isEmpty()) {
+            throw new IllegalArgumentException("Board not found for domain: " + domain);
+        }
+        BoardEntity board = boardSelect.get();
 
-        //BoardEntity boardEntity = new BoardEntity();
-        BoardEntity boardEntity = boardRepository.findByNo(1);//하드코딩되어있음.
+        MenuEntity menu = MenuEntity.builder()
+                .board(board)
+                .orderNo(1)
+                .depth(menuDTO.getDepth())
+                .name(menuDTO.getName())
+                .ref(menuDTO.getRef())
+                .useYN('Y')
+                .build();
+        menuRepository.save(menu);
+        return "menumanage";
+    }
 
-        System.out.printf("\n boardEntity 값은 "+boardEntity+"\n");
-        System.out.printf("\n menuAddDTO 값은 "+menuAddDTO+"\n");
 
-        menuRepository.save(
-                MenuEntity.builder()
-                        .board(boardEntity) //타입이 BoardEntity 이어야함.
-                        .name(menuAddDTO.getName())
-                        .ref(menuAddDTO.getRef())
-                        .depth(menuAddDTO.getDepth())
-                        .orderNo(1)
-                        .useYN('Y')
-                        .build()
-        );
-        //MenuEntity menuEntity = menuRepository.save(menuAddDTO.toEntity());
 
-        // 적절한 뷰 반환하도록 수정하지 않으면 뻗음.
+    @Override
+    public String edit(String domain, MenuDTO menuDTO) {
+        MenuEntity menu = menuRepository.findById(menuDTO.getNo())
+                .orElseThrow(() -> new RuntimeException("Menu not found"));
+        menu.setName(menuDTO.getName());
+        menu.setRef(menuDTO.getRef());
+        menuRepository.save(menu);
         return "menumanage";
     }
 
     @Override
-    public String delete(MenuDTO menuDTO) {
-            MenuEntity menuEntity = menuRepository.findByNo(menuDTO.getNo());
-            menuEntity.setUseYN('N');
-            menuRepository.save(menuEntity);
-
-        return "menumanage";
-    }
-
-    @Override
-    public String edit(MenuDTO menuDTO) {
-        MenuEntity menuEntity = menuRepository.findByNo(menuDTO.getNo());
-        menuEntity.setName(menuDTO.getName());
-        menuEntity.setRef(menuDTO.getRef());
+    public String delete(String domain, Integer no) {
+        MenuEntity menuEntity = menuRepository.findByNo(no);
+        menuEntity.setUseYN('N');
         menuRepository.save(menuEntity);
-        return "menumanage";
-    }
+return "menumanage";
 
+    }
 
 }

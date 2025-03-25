@@ -7,16 +7,16 @@
     <link rel="stylesheet" href="/css/blogStyle.css">
     <script src="/js/blog/menuManage.js"></script>
 </head>
-<div layout:fragment="content">
+
+<body th:attr="data-domain=${domain}">
+    <div layout:fragment="content">
         <div class="row min-height-container gx-4">
             <!-- 좌측 메뉴 리스트 -->
             <div class="col-12 col-md-4 mb-4">
                 <div class="section-box d-flex flex-column h-100">
                     <ul class="list-group mb-3" id="menuList" th:if="${menuList != null}">
                         <li th:each="menu : ${menuList}" class="list-group-item border-0 p-2"
-                            th:data-menuNo="${menu.no}"
-                            th:data-menuName="${menu.name}"
-                            th:data-menuRef="${menu.ref}">
+                            th:data-menuNo="${menu.no}" th:data-menuName="${menu.name}" th:data-menuRef="${menu.ref}">
                             <div class="w-100 d-flex justify-content-between align-items-center">
                                 <span class="fw-bold" th:if="${menu.depth == 0}" th:text="${menu.name}"></span>
                                 <span th:if="${menu.depth != 0}" th:text="${menu.name}"></span>
@@ -26,8 +26,7 @@
                                 <ul class="list-group mt-2 ps-3" th:if="${menu.children != null}">
                                     <li th:each="child : ${menu.children}"
                                         class="list-group-item border-0 d-flex justify-content-between align-items-center"
-                                        th:data-menuRef="${child.ref}"
-                                        th:data-menuNo="${child.no}" 
+                                        th:data-menuRef="${child.ref}" th:data-menuNo="${child.no}"
                                         th:data-menuName="${child.name}">
                                         <span th:text="${child.name}"></span>
                                         <button type="button" class="btn btn-danger btn-sm delete-btn">삭제</button>
@@ -37,19 +36,21 @@
                         </li>
                     </ul>
                 </div>
-            </div>                
+            </div>
 
             <!-- 우측 메뉴 추가/수정 폼 -->
             <div class="col-12 col-md-8 mb-4">
-                <form id="menuForm" th:action="@{/menu/save}" method="post" class="section-box d-flex flex-column justify-content-between h-100">
+                <form id="menuForm" th:action="@{/menu/save}" method="post"
+                    class="section-box d-flex flex-column justify-content-between h-100">
                     <input type="hidden" id="no" name="no">
                     <div>
                         <div class="mb-3 row">
-                            <label for="ref" id="reflabel" name="reflabel" class="col-sm-3 col-form-label">상위 메뉴 :</label>
+                            <label for="ref" id="reflabel" name="reflabel" class="col-sm-3 col-form-label">상위 메뉴
+                                :</label>
                             <div class="col-sm-9">
                                 <select class="form-select" name="ref" id="ref">
                                     <option value="0">상위 항목 없음</option>
-                                    <th:block th:each="menu : ${menuList}" th:if="${menu.depth == 0}" >
+                                    <th:block th:each="menu : ${menuList}" th:if="${menu.depth == 0}">
                                         <option th:value="${menu.no}" th:text="${menu.name}"></option>
                                     </th:block>
                                 </select>
@@ -58,7 +59,8 @@
                         <div class="mb-3 row">
                             <label for="name" class="col-sm-3 col-form-label">메뉴명 :</label>
                             <div class="col-sm-9">
-                                <input type="text" id="name" name="name" class="form-control" placeholder="메뉴명을 입력하세요" required>
+                                <input type="text" id="name" name="name" class="form-control" placeholder="메뉴명을 입력하세요"
+                                    required>
                             </div>
                         </div>
                     </div>
@@ -68,14 +70,17 @@
                         </div>
                         <div>
                             <button type="button" name="add" id="add" class="btn btn-success">메뉴 추가</button>
-                            <button type="button" name="groupadd" id="groupadd" class="btn btn-success" style="display:none;">그룹 추가</button>
-                            <button type="button" name="edit" id="edit" class="btn btn-success" style="display:none;">수정</button>
+                            <button type="button" name="groupadd" id="groupadd" class="btn btn-success"
+                                style="display:none;">그룹 추가</button>
+                            <button type="button" name="edit" id="edit" class="btn btn-success"
+                                style="display:none;">수정</button>
                             <button type="button" name="reset" id="reset" class="btn btn-secondary">취소</button>
                         </div>
                     </div>
                 </form>
             </div>
         </div>
-</div>
+    </div>
+</body>
 
 </html>

@@ -11,11 +11,11 @@ import java.util.List;
 
 
 public interface MenuService {
-    String getMenu(Model model);
+    String getMenu(String domain, Model model);
 
-    String add(MenuAddDTO menuAddDTO);
+    String add(String domain, MenuDTO menuDTO);
 
-    String delete(MenuDTO menuDTO);
+    String delete(String domain, Integer no);
 
-    String edit(MenuDTO menuDTO);
+    String edit(String domain, MenuDTO menuDTO);
 }
