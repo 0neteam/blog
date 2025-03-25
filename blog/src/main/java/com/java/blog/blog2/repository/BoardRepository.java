@@ -16,4 +16,9 @@ public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
 
     // 블로그 타입(2)이고 사용중인 보드를 조회 (예: 네이버 블로그 홈에 보여줄 블로그들)
     List<BoardEntity> findByTypeAndUseYN(Integer type, char useYN);
+
+    boolean existsByRegUserNoAndType(Integer regUserNo, Integer type);
+
+    Optional<BoardEntity> findFirstByRegUserNoAndType(Integer regUserNo, Integer type);
+
 }

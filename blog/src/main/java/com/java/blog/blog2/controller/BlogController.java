@@ -1,6 +1,7 @@
 package com.java.blog.blog2.controller;
 
 import com.java.blog.blog2.service.BlogServiceImp;
+import com.java.blog.config.Utils;
 import com.java.blog.entity.PostEntity;
 import com.java.blog.entity.BoardEntity;
 import jakarta.servlet.http.HttpServletRequest;
@@ -19,9 +20,19 @@ public class BlogController {
 
     @Qualifier("blogServiceImp2")
     private final BlogServiceImp blogService;
+    private final Utils utils;
 
     @GetMapping("/blog/home")
-    public String blogHome() {
+    public String blogHome(Model model, HttpServletRequest req) {
+        String userNoStr = utils.getUserNo(req);
+        int userNo = 0;
+        if (userNoStr != null && !userNoStr.isBlank()) {
+            try {
+                userNo = Integer.parseInt(userNoStr);
+            } catch (NumberFormatException ignored) {}
+        }
+        model.addAttribute("hasBlog", blogService.hasBlog(userNo));
+        model.addAttribute("homeData", blogService.getHomeData());
         return "blogHome";
     }
 

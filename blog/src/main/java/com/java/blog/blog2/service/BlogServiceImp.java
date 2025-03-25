@@ -1,5 +1,6 @@
 package com.java.blog.blog2.service;
 
+import com.java.blog.config.Utils;
 import com.java.blog.entity.BoardEntity;
 import com.java.blog.entity.MenuEntity;
 import com.java.blog.entity.PostEntity;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.time.LocalDateTime;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -26,6 +28,7 @@ public class BlogServiceImp implements BlogService {
     private final MenuRepository menuRepository;
     @Qualifier("boardRepository2")
     private final BoardRepository boardRepository;
+    private final Utils utils;
 
     // 게시글 목록 조회: request attribute "domain"를 통해 해당 BoardEntity를 조회하고, 그 board에 속하는 글들을 가져옴
     @Override
@@ -81,37 +84,26 @@ public class BlogServiceImp implements BlogService {
     @Override
     @Transactional
     public String createBlog(HttpServletRequest req) {
-        // 요청 파라미터에서 사용자 이름을 가져오지만, 값이 없으면 임시로 "blog"를 사용합니다.
-        String userName = req.getParameter("userName");
-        if (userName == null || userName.isEmpty()) {
-            userName = "blog"; // user 테이블에 저장된 이름("blog")으로 설정
-        }
-        // userId도 임시로 9 (user no 9)로 사용합니다.
-        String userIdParam = req.getParameter("userId");
-        Long regUserNo;
-        try {
-            regUserNo = (userIdParam != null) ? Long.parseLong(userIdParam) : 9L;
-        } catch (NumberFormatException e) {
-            regUserNo = 9L;
-        }
+        // JWT에서 userNo, userName 추출
+        String userNoStr = utils.getUserNo(req);
+        if(userNoStr == null) throw new RuntimeException("로그인 필요");
+        int userNo = Integer.parseInt(userNoStr);
+        String userName = utils.getUserName(req);
+        if(userName == null) userName = "default";
 
         BoardEntity blog = new BoardEntity();
+        blog.setRegUserNo(userNo);
+        blog.setType(2);
         blog.setName(userName + "의 블로그");
-        // 도메인을 "blog/list/{userName}" 형식으로 설정 (예: "blog/list/blog")
         String fullDomain = "blog/list/" + userName;
         blog.setDomain(fullDomain);
         blog.setDescription(userName + "'s Personal Blog");
         blog.setUseYN('Y');
         blog.setRegDate(LocalDateTime.now());
-        blog.setRegUserNo(regUserNo.intValue());
-        blog.setType(2); // 블로그 타입: 2
-
         boardRepository.save(blog);
 
-        // 블로그에 연결된 메뉴가 없으면 기본 메뉴를 생성합니다.
-        if (menuRepository.findByBoard_No(blog.getNo()).isEmpty()) {
+        if(menuRepository.findByBoard_No(blog.getNo()).isEmpty()) {
             MenuEntity defaultMenu = new MenuEntity();
-            // 만약 MenuEntity가 BoardEntity와 연관관계로 매핑되어 있다면 setBoard 사용
             defaultMenu.setBoard(blog);
             defaultMenu.setName("기본 메뉴");
             defaultMenu.setOrderNo(1);
@@ -120,9 +112,9 @@ public class BlogServiceImp implements BlogService {
             defaultMenu.setUseYN('Y');
             menuRepository.save(defaultMenu);
         }
-
-        return blog.getDomain(); // 예: "blog/list/blog"
+        return fullDomain;
     }
+
 
 
     // 도메인으로 BoardEntity를 조회하는 헬퍼 메서드
@@ -132,4 +124,23 @@ public class BlogServiceImp implements BlogService {
         return boardRepository.findFirstByDomain(fullDomain)
                 .orElseThrow(() -> new RuntimeException("해당 도메인의 게시판이 없습니다."));
     }
+
+    @Override
+    public Map<BoardEntity, List<PostEntity>> getHomeData() {
+        // type=2(블로그), useYN='Y'인 모든 게시판 조회
+        List<BoardEntity> boards = boardRepository.findByTypeAndUseYN(2, 'Y');
+
+        Map<BoardEntity, List<PostEntity>> result = new LinkedHashMap<>();
+        for (BoardEntity b : boards) {
+            List<PostEntity> recent = postRepository.findTop3ByMenu_Board_NoOrderByRegDateDesc(b.getNo());
+            result.put(b, recent);
+        }
+        return result;
+    }
+
+    @Override
+    public boolean hasBlog(int userNo) {
+        return boardRepository.existsByRegUserNoAndType(userNo, 2);
+    }
+
 }

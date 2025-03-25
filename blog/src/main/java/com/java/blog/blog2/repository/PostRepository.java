@@ -16,4 +16,7 @@ public interface PostRepository extends JpaRepository<PostEntity, Integer> {
     @Query("SELECT p FROM PostEntity p WHERE p.menu.board.no = :boardNo ORDER BY p.regDate DESC")
     List<PostEntity> findByBoardNoOrderByRegDateDesc(@Param("boardNo") Integer boardNo);
 
+    // BoardEntity PK를 기준으로 최신 3개 글 조회
+    List<PostEntity> findTop3ByMenu_Board_NoOrderByRegDateDesc(Integer boardNo);
+
 }

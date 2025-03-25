@@ -8,9 +8,11 @@ import java.util.List;
 import java.util.Map;
 
 public interface BlogService {
-    Map<String, Object> findList(HttpServletRequest req);
-    List<MenuEntity> findBoardNo(int boardNo);
-    void savePost(PostEntity post, String domain);
-    String createBlog(HttpServletRequest req);
-    BoardEntity findBoardByDomain(String domain);
+    public Map<String, Object> findList(HttpServletRequest req);
+    public List<MenuEntity> findBoardNo(int boardNo);
+    public void savePost(PostEntity post, String domain);
+    public String createBlog(HttpServletRequest req);
+    public BoardEntity findBoardByDomain(String domain);
+    public Map<BoardEntity, List<PostEntity>> getHomeData();
+    public boolean hasBlog(int userNo);
 }
