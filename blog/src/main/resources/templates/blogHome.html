@@ -17,7 +17,7 @@
 </head>
 <body>
 <div layout:fragment="content" class="container-fluid mt-5">
-  <!-- 버튼을 전체 폭의 컨테이너 안에서 오른쪽 정렬 -->
+  <!-- 버튼: 블로그가 없을 때만 표시 -->
   <div class="d-flex justify-content-end mb-4">
     <button id="createBlogBtn" class="btn btn-primary" th:if="!${hasBlog}">
       내 블로그 생성하기
@@ -29,7 +29,8 @@
     <div class="col-md-4" th:each="entry : ${homeData}">
       <div class="card h-100 shadow-sm">
         <div class="card-header bg-light">
-          <a th:href="@{/blog/list/{domain}(domain=${entry.key.domain.substring(entry.key.domain.lastIndexOf('/') + 1)})}"
+          <!-- 개별 블로그 홈 페이지: /{domain} -->
+          <a th:href="@{/{domain}(domain=${entry.key.domain})}"
              th:text="${entry.key.name}"
              class="fs-5 text-decoration-none"></a>
         </div>
@@ -40,7 +41,8 @@
           </li>
         </ul>
         <div class="card-footer text-end bg-white">
-          <a th:href="@{/blog/list/{domain}(domain=${entry.key.domain.substring(entry.key.domain.lastIndexOf('/') + 1)})}">더보기 →</a>
+          <!-- 더보기 링크: 동일하게 /{domain} -->
+          <a th:href="@{/{domain}(domain=${entry.key.domain})}">더보기 →</a>
         </div>
       </div>
     </div>

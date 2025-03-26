@@ -11,12 +11,10 @@ import java.util.List;
 @Repository("postRepository2")
 public interface PostRepository extends JpaRepository<PostEntity, Integer> {
 
-    // 기존 메서드: List<PostEntity> findByMenu_Board_No(Integer boardNo);
-    // 대신 아래와 같이 명시적인 JPQL 쿼리를 사용합니다.
+    // BoardEntity의 no를 기준으로 글 목록을 최신순으로 조회하는 JPQL 쿼리
     @Query("SELECT p FROM PostEntity p WHERE p.menu.board.no = :boardNo ORDER BY p.regDate DESC")
     List<PostEntity> findByBoardNoOrderByRegDateDesc(@Param("boardNo") Integer boardNo);
 
-    // BoardEntity PK를 기준으로 최신 3개 글 조회
+    // BoardEntity의 no를 기준으로 최신 3개 글 조회
     List<PostEntity> findTop3ByMenu_Board_NoOrderByRegDateDesc(Integer boardNo);
-
 }

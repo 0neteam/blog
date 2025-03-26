@@ -15,4 +15,5 @@ public interface BlogService {
     public BoardEntity findBoardByDomain(String domain);
     public Map<BoardEntity, List<PostEntity>> getHomeData();
     public boolean hasBlog(int userNo);
+    public Map<String, Object> findPostsByMenu(String domain, Integer menuNo);
 }

@@ -39,14 +39,14 @@ public class BlogServiceImp implements BlogService {
     @Override
     public Map<String, Object> findList(HttpServletRequest req) {
         String domain = (String) req.getAttribute("domain");
-        if(domain == null || domain.isEmpty()){
+        if (domain == null || domain.isEmpty()) {
             domain = "default";
         }
-        String fullDomain = "blog/list/" + domain;
-        BoardEntity board = boardRepository.findFirstByDomain(fullDomain)
+        // 기존 "blog/list/" 접두어를 제거
+        // String fullDomain = "blog/list/" + domain;
+        BoardEntity board = boardRepository.findFirstByDomain(domain)
                 .orElseThrow(() -> new RuntimeException("해당 도메인의 게시판이 없습니다."));
 
-        // 변경: findByBoardNo 메서드를 사용하여 게시글 조회
         List<PostEntity> posts = postRepository.findByBoardNoOrderByRegDateDesc(board.getNo());
 
         // 디버깅용 로그 출력
@@ -69,23 +69,18 @@ public class BlogServiceImp implements BlogService {
     // 게시글 저장: 도메인 정보를 사용해 현재 BoardEntity를 조회하고 글을 저장
     @Override
     public void savePost(PostEntity post, String domain) {
-        // 만약 작성자 정보가 없으면 기본값 설정 (추후 로그인 정보 대체)
         if (post.getRegUserNo() == null) {
             post.setRegUserNo(1);
         }
-        // 선택한 메뉴를 조회 (post.getMenu()에는 선택한 메뉴의 id가 담겨 있어야 함)
         MenuEntity menu = menuRepository.findById(post.getMenu().getNo())
                 .orElseThrow(() -> new RuntimeException("메뉴를 찾을 수 없습니다."));
-        // 도메인에 맞는 BoardEntity 조회
-        String fullDomain = "blog/list/" + domain;
-        BoardEntity board = boardRepository.findFirstByDomain(fullDomain)
-                .orElseThrow(() -> new RuntimeException("게시판을 찾을 수 없습니다."));
-        // 글 작성 시 필요한 값들 설정
+        // ✂️ prefix 제거 — 이제 findBoardByDomain(domain) 호출만으로 충분
+        BoardEntity board = findBoardByDomain(domain);
+
         post.setRegDate(LocalDateTime.now());
         post.setViewCount(0);
         post.setUseYN('Y');
         post.setMenu(menu);
-        // 만약 post와 board 간 연관관계가 있다면 추가 설정 가능
         postRepository.save(post);
     }
 
@@ -135,8 +130,7 @@ public class BlogServiceImp implements BlogService {
     // 도메인으로 BoardEntity를 조회하는 헬퍼 메서드
     @Override
     public BoardEntity findBoardByDomain(String domain) {
-        String fullDomain = "blog/list/" + domain;
-        return boardRepository.findFirstByDomain(fullDomain)
+        return boardRepository.findFirstByDomain(domain)
                 .orElseThrow(() -> new RuntimeException("해당 도메인의 게시판이 없습니다."));
     }
 
@@ -156,6 +150,20 @@ public class BlogServiceImp implements BlogService {
     @Override
     public boolean hasBlog(int userNo) {
         return boardRepository.existsByRegUserNoAndType(userNo, 2);
+    }
+
+    @Override
+    public Map<String, Object> findPostsByMenu(String domain, Integer menuNo) {
+        BoardEntity board = findBoardByDomain(domain);
+        MenuEntity menu = menuRepository.findById(menuNo)
+                .orElseThrow(() -> new RuntimeException("해당 메뉴가 없습니다."));
+        List<PostEntity> posts = postRepository.findByBoardNoOrderByRegDateDesc(board.getNo());
+
+        Map<String, Object> result = new HashMap<>();
+        result.put("board", board);
+        result.put("menu", menu);
+        result.put("posts", posts);
+        return result;
     }
 
 }
