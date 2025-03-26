@@ -56,6 +56,7 @@ public class BlogController {
     @GetMapping("/blog/list/{domain}/post")
     public String blogPost(@PathVariable("domain") String domain, Model model, HttpServletRequest req) {
         BoardEntity board = blogService.findBoardByDomain(domain);
+        // 해당 board의 메뉴 목록을 조회하여 모델에 담음
         model.addAttribute("menus", blogService.findBoardNo(board.getNo()));
         model.addAttribute("post", new PostEntity());
         model.addAttribute("domain", domain);
@@ -68,4 +69,8 @@ public class BlogController {
         blogService.savePost(post, domain);
         return "redirect:/blog/list/" + domain;
     }
+
+
+
+
 }

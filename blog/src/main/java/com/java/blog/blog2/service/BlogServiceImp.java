@@ -1,5 +1,6 @@
 package com.java.blog.blog2.service;
 
+import com.java.blog.blog2.repository.UserRepository;
 import com.java.blog.config.Utils;
 import com.java.blog.entity.BoardEntity;
 import com.java.blog.entity.MenuEntity;
@@ -7,8 +8,10 @@ import com.java.blog.entity.PostEntity;
 import com.java.blog.blog2.repository.BoardRepository;
 import com.java.blog.blog2.repository.MenuRepository;
 import com.java.blog.blog2.repository.PostRepository;
+import com.java.blog.entity.UserEntity;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,6 +32,8 @@ public class BlogServiceImp implements BlogService {
     @Qualifier("boardRepository2")
     private final BoardRepository boardRepository;
     private final Utils utils;
+
+    private final UserRepository userRepository;
 
     // 게시글 목록 조회: request attribute "domain"를 통해 해당 BoardEntity를 조회하고, 그 board에 속하는 글들을 가져옴
     @Override
@@ -64,19 +69,23 @@ public class BlogServiceImp implements BlogService {
     // 게시글 저장: 도메인 정보를 사용해 현재 BoardEntity를 조회하고 글을 저장
     @Override
     public void savePost(PostEntity post, String domain) {
+        // 만약 작성자 정보가 없으면 기본값 설정 (추후 로그인 정보 대체)
         if (post.getRegUserNo() == null) {
-            post.setRegUserNo(1); // 기본값 (추후 로그인 정보로 대체)
+            post.setRegUserNo(1);
         }
+        // 선택한 메뉴를 조회 (post.getMenu()에는 선택한 메뉴의 id가 담겨 있어야 함)
         MenuEntity menu = menuRepository.findById(post.getMenu().getNo())
                 .orElseThrow(() -> new RuntimeException("메뉴를 찾을 수 없습니다."));
+        // 도메인에 맞는 BoardEntity 조회
         String fullDomain = "blog/list/" + domain;
         BoardEntity board = boardRepository.findFirstByDomain(fullDomain)
                 .orElseThrow(() -> new RuntimeException("게시판을 찾을 수 없습니다."));
+        // 글 작성 시 필요한 값들 설정
         post.setRegDate(LocalDateTime.now());
         post.setViewCount(0);
         post.setUseYN('Y');
         post.setMenu(menu);
-        // 만약 PostEntity에 BoardEntity와의 연관관계가 있다면 여기에 설정할 수 있습니다.
+        // 만약 post와 board 간 연관관계가 있다면 추가 설정 가능
         postRepository.save(post);
     }
 
@@ -84,25 +93,29 @@ public class BlogServiceImp implements BlogService {
     @Override
     @Transactional
     public String createBlog(HttpServletRequest req) {
-        // JWT에서 userNo, userName 추출
+        // JWT에서 userNo 추출
         String userNoStr = utils.getUserNo(req);
         if(userNoStr == null) throw new RuntimeException("로그인 필요");
         int userNo = Integer.parseInt(userNoStr);
-        String userName = utils.getUserName(req);
-        if(userName == null) userName = "default";
+
+        // DB에서 사용자 정보 조회
+        UserEntity user = userRepository.findById(userNo)
+                .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
+        String userName = user.getName();  // DB에 저장된 사용자 이름 (예: "realBlog")
 
         BoardEntity blog = new BoardEntity();
         blog.setRegUserNo(userNo);
         blog.setType(2);
         blog.setName(userName + "의 블로그");
-        String fullDomain = "blog/list/" + userName;
-        blog.setDomain(fullDomain);
+        // 도메인을 사용자 이름으로 설정 (예: "realBlog")
+        blog.setDomain(userName);
         blog.setDescription(userName + "'s Personal Blog");
         blog.setUseYN('Y');
         blog.setRegDate(LocalDateTime.now());
         boardRepository.save(blog);
 
-        if(menuRepository.findByBoard_No(blog.getNo()).isEmpty()) {
+        // 기본 메뉴 생성 (없으면 생성)
+        if (menuRepository.findByBoard_No(blog.getNo()).isEmpty()) {
             MenuEntity defaultMenu = new MenuEntity();
             defaultMenu.setBoard(blog);
             defaultMenu.setName("기본 메뉴");
@@ -112,8 +125,10 @@ public class BlogServiceImp implements BlogService {
             defaultMenu.setUseYN('Y');
             menuRepository.save(defaultMenu);
         }
-        return fullDomain;
+        return userName;
     }
+
+
 
 
 

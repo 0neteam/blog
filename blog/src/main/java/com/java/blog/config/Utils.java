@@ -41,7 +41,6 @@ public class Utils {
 
   // 추가: JWT 토큰에서 사용자 이름(name) 클레임을 추출하는 메서드
   public String getUserName(HttpServletRequest request) {
-    String userName = "";
     Cookie[] cookies = request.getCookies();
     if (cookies != null) {
       for (Cookie cookie : cookies) {
@@ -49,13 +48,21 @@ public class Utils {
           String token = cookie.getValue();
           try {
             Jwt jwt = jwtDecoder.decode(token);
-            userName = (String) jwt.getClaims().get("name");
+            String userName = (String) jwt.getClaims().get("name");
+            if(userName == null || userName.isBlank()){
+              userName = (String) jwt.getClaims().get("sub");
+            }
+            System.out.println("추출된 userName: " + userName);
+            return userName;
           } catch (JwtException e) {
+            e.printStackTrace();
             return null;
           }
         }
       }
     }
-    return userName;
+    return null;
   }
+
+
 }
