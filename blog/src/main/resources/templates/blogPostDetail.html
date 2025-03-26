@@ -9,50 +9,176 @@
     <script src="/js/blog/postDetail.js"></script>
     <link rel="stylesheet" href="static/css/blogStyle.css">
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
-    <!-- 메인 콘텐츠 -->
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/attaches@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/code@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/raw@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/marker@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/nested-list@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
+
+    <link rel="stylesheet" href="/css/blogStyle.css">
+    <link rel="stylesheet" href="/css/blogPost.css">
+
     <main>
         <div>
-            <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@latest"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@editorjs/attaches@latest"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@latest"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@latest"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@editorjs/code@latest"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@editorjs/raw@latest"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@editorjs/marker@latest"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@editorjs/nested-list@latest"></script>
-            <script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
-
-            <link rel="stylesheet" href="/css/blogStyle.css">
-            <link rel="stylesheet" href="/css/blogPost.css">
+            <button type="button" id="save" onclick="saveEvent()">저장</button>
+            <button type="button" id="edit" onclick="editEvent()">수정</button>
+            <button type="button" id="clear" onclick="clearEvent()">초기화</button>
         </div>
-        <div class="row">
-            <div class="col-12 mb-2 border rounded">
-                <h1 th:text="${post.title}"></h1>
-                작성일: <span th:text="${post.regDate}"></span>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-12 mb-5 border rounded">
-                <p th:text="${post.content}"></p>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-6">
-                <!-- <button type="button" class="btn btn-primary">좋아요</button>
-                <button type="button" class="btn btn-primary">댓글열기</button> -->
-            </div>
-            <div class="col-6 d-md-flex justify-content-md-end">
-                <button type="button" class="btn btn-primary me-1">수정</button>
-                <button type="button" class="btn btn-danger" id="deletePost">삭제</button>
-            </div>
-        </div>
+        <hr/>
+        <div>
+            <!-- <input type="text" name="title" id="title" required="required" style="width: 100%"
+                   th:value="${title}" /> -->
+                   <input type="text" name="title" id="title" class="form-control " required="required" style="width: 100%"
+                   th:value="${post.title}" readonly/>
+                   <span>작성일: <p th:text="${post.regDate}"></p></span>
+          </div>
+          <div id="editorjs"></div>
+          <script th:inline="javascript">
+            const boardData = [[${boardData}]]; // 서버에서 전달한 데이터를 가져옴
+            const parsedData = JSON.parse(boardData); // JSON 문자열을 객체로 파싱
+        
+            const saveEvent = async () => { // async 추가
+              try {
+                const data = await editor.save(); // await 추가
+                if (data.blocks.length > 0) {
+                  // 비동기 통신으로 내용 저장
+                  const title = document.getElementById("title").value;
+        
+                  console.log(data);
+                  console.log(JSON.stringify(data.blocks));
+                  editor.readOnly.toggle();
+        
+                  const formData = new FormData();
+                  formData.append("title", title);
+                  formData.append("content", JSON.stringify(data.blocks));
+        
+                  // axios 요청
+                  const response = await axios({
+                    method: 'POST',
+                    url: 'http://192.168.0.21:8080/board/upload',
+                    data: formData
+                  });
+                  console.log(response.data); // 응답 데이터를 출력
+                  return response.data;
+                }
+              } catch (error) {
+                console.error(error);
+              }
+            };
+            const editEvent = () => {
+                editor.readOnly.toggle();
+            }
+            const clearEvent = () => {
+                editor.clear();
+            }
+          const fileUpload = async (file) => {
+            const formData = new FormData()
+            formData.append("file", file)
+        
+            try {
+              const response = await axios({
+                method: 'POST',
+                url: 'http://192.168.0.21:8080/file/upload',
+                data: formData
+              });
+              return response.data;
+            } catch (error) {
+              console.error(error);
+            }
+        
+            return new Promise((resolve, reject) => {
+              resolve({
+                success: 0,
+                file: {url: ''}
+              })
+            });
+          }
+          const editor = new EditorJS({
+            holderId : 'editorjs',
+            data: {blocks: parsedData },
+            readOnly: true, // 상세보기에서 사용하는 옵션 설정
+            tools: {
+                   paragraph: {
+                   class: Paragraph,
+                   config: {placeholder: '내용을 입력하세요.'},
+                   inlineToolbar: true
+                 },
+              header: {
+                class: Header,
+                inlineToolbar : true
+              },
+              quote: {
+                class: Quote,
+                inlineToolbar: true,
+                config: {
+                  quotePlaceholder: 'Enter a quote',
+                  captionPlaceholder: 'Quote\'s author',
+                },
+                shortcut: 'CMD+SHIFT+O'
+              },
+              marker: {
+                class: Marker,
+                shortcut: 'CMD+SHIFT+M',
+              },
+              delimiter: Delimiter,
+              table: {
+                class: Table,
+                inlineToolbar: true,
+                shortcut: 'CMD+ALT+T'
+              },
+              list: {
+                class: NestedList,
+                inlineToolbar: true,
+                config: {defaultStyle: 'unordered'},
+                shortcut: 'CMD+SHIFT+L'
+              },
+              raw: RawTool,
+              code: CodeTool,
+              inlineCode: {
+                class: InlineCode,
+                shortcut: 'CMD+SHIFT+M',
+              },
+              checklist: {
+                class: Checklist,
+                inlineToolbar: true,
+              },
+              image: {
+                class: ImageTool,
+                config: {
+                  uploader: {
+                      uploadByFile(file){
+                        return fileUpload(file)
+                      }
+                  },
+                  field: 'image',
+                  types: 'image/*'
+                }
+              },
+              attaches: {
+                class: AttachesTool,
+                config: {
+                  uploader: {
+                    uploadByFile(file) {
+                      return fileUpload(file)
+                    }
+                  }
+                }
+              },
+            }
+          });
+          </script>
     </main>
 </div>
 

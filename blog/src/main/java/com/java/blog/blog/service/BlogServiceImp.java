@@ -26,6 +26,7 @@ public class BlogServiceImp implements BlogService {
     public String postDetail(Model model, Integer no) {
         PostEntity postEntity = postRepository.findById(no).orElseThrow();
         model.addAttribute("post",postEntity);
+        model.addAttribute("boardData", postEntity.getContent());
         getMenu(model); // 화면에 메뉴 표시용
         return "blogPostDetail";
     }
