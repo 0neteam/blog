@@ -8,11 +8,8 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
-
-//@RequestMapping("/post")
-//@RequiredArgsConstructor
-
-@RequestMapping("/{domain}/post")
+//blog2의 BlogPostController 의 reqMapping과 겹치기때문에 임시로 post2로 변경.
+@RequestMapping("/{domain}/post2")
 @RequiredArgsConstructor
 @Controller(value = "blogController1")
 public class BlogController {
