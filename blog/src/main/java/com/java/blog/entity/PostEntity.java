@@ -7,6 +7,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
+import org.hibernate.annotations.UpdateTimestamp;
 
 import java.time.LocalDateTime;
 
@@ -35,7 +36,9 @@ public class PostEntity {
     @Column(nullable = false)
     private Integer regUserNo;
 
-    @Column(nullable = false)
+    @CreationTimestamp
+    @Column(nullable = false, updatable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime regDate;
 
     @Column(nullable = false)
@@ -44,9 +47,8 @@ public class PostEntity {
     @Column
     private Integer modUserNo;
 
-    @Column
-    @CreationTimestamp
-    @JsonFormat(pattern = "yyyy.MM.dd.")
+    @UpdateTimestamp
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime modDate;
 
     @Column(nullable = false)

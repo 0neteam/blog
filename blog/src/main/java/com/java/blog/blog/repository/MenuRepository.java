@@ -10,4 +10,7 @@ import java.util.List;
 public interface MenuRepository extends JpaRepository<MenuEntity, Integer> {
     MenuEntity findByNo(int no);
     public List<MenuEntity> findByBoardNoAndUseYN(Integer boardNo, char useYN);
+
+    public List<MenuEntity> findByBoardNoAndRefAndUseYNOrderByOrderNoAsc(Integer boardNo, Integer ref, char useYN);
+
 }
