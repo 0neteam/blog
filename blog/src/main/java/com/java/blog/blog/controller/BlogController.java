@@ -8,9 +8,11 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
 
-//post/get
-// blog/menu/postDetail
-@RequestMapping("/post")
+
+//@RequestMapping("/post")
+//@RequiredArgsConstructor
+
+@RequestMapping("/{domain}/post")
 @RequiredArgsConstructor
 @Controller(value = "blogController1")
 public class BlogController {
@@ -23,21 +25,23 @@ public class BlogController {
 //    public String blogPost(){
 //        return "blogPost";
 //    }
+    //
+
 
     @Qualifier(value = "blogServiceImp1")
     private final BlogService blogService;
 
-    @GetMapping("/detail")
+    @GetMapping
     public String postDetail(Model model, @RequestParam(name = "no") Integer no){
 
         return blogService.postDetail(model, no);
 
     }
 
-    @GetMapping("/edit")
+    @PatchMapping
     public String blogPostEdit() { return "blogPostEdit"; }
 
-    @ResponseBody
+    @DeleteMapping
     @PostMapping("delete")
     public char deletePost(@RequestParam("no") Integer no){
         return blogService.deletePost(no);

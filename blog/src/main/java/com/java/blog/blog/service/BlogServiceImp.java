@@ -27,7 +27,7 @@ public class BlogServiceImp implements BlogService {
         PostEntity postEntity = postRepository.findById(no).orElseThrow();
         model.addAttribute("post",postEntity);
         getMenu(model); // 화면에 메뉴 표시용
-        return "postDetail";
+        return "blogPostDetail";
     }
 
     @Modifying
