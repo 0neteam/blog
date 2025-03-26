@@ -33,9 +33,9 @@ public class BoardEntity {
     @Column(nullable = false, length = 30)
     private String domain;
 
-    @Column(nullable = false)
     @CreationTimestamp
-    @JsonFormat(pattern = "yyyy.MM.dd.")
+    @Column(nullable = false, updatable = false)
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime regDate;
 
     @Column(nullable = false)

@@ -31,7 +31,7 @@ public class BlogServiceImp implements BlogService {
         return "blogPostDetail";
     }
 
-    @Modifying
+
     @Override
     public char deletePost(Integer no) {
         PostEntity postEntity = postRepository.findById(no).orElseThrow();
