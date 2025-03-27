@@ -1,5 +1,7 @@
 package com.java.blog.blog.controller;
 
+import com.java.blog.blog.dto.PostDTO;
+import com.java.blog.blog.dto.PostResDTO;
 import com.java.blog.blog.service.BlogService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -38,27 +40,12 @@ public class BlogController {
         blogService.read(domain, no, model);
         return "blogPostDetail";
     }
-    //http://127.0.0.1:8002/blog1/post2/?no=2
-    //http://127.0.0.1:8002/blog1/post2/2
 
-//    @PatchMapping
-//    public String blogPostEdit() { return "blogPostEdit"; }
+    // 포스트 수정
+    @PatchMapping("/{no:[0-9]+}")
+    @ResponseBody
+    public PostResDTO writeEdit(@PathVariable("no") Integer no, @RequestBody PostDTO postDTO) {
+        return blogService.writeEdit(no, postDTO);
+    }
 
-//    @DeleteMapping
-//    @PostMapping("delete")
-//    public char deletePost(@RequestParam("no") Integer no){
-//        return blogService.deletePost(no);
-//    }
-
-//    @ResponseBody
-//    @PostMapping("getMenu")
-//    public String getMenu(Model model){
-//        return blogService.getMenu(model);
-//    }
-
-//    @ResponseBody
-//    @PostMapping("deleteMenu")
-//    public String deleteMenu(@RequestParam("no") Integer no){
-//        return blogService.deleteMenu(no);
-//    }
 }
