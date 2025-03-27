@@ -1,10 +1,12 @@
 package com.java.blog.blog.service;
 
+import com.java.blog.blog.dto.MenuDTO;
 import com.java.blog.blog.dto.PostDTO;
 import com.java.blog.blog.dto.PostResDTO;
 import com.java.blog.blog.repository.BoardRepository;
 import com.java.blog.blog.repository.MenuRepository;
 import com.java.blog.blog.repository.UserRepository;
+import com.java.blog.entity.BoardEntity;
 import com.java.blog.entity.MenuEntity;
 import com.java.blog.entity.PostEntity;
 import com.java.blog.blog.repository.PostRepository;
@@ -15,6 +17,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service(value = "blogServiceImp1")
@@ -28,6 +33,9 @@ public class BlogServiceImp implements BlogService {
 
     @Qualifier(value = "menuRepository1")
     private final MenuRepository menuRepository;
+
+    @Qualifier(value = "boardRepository1") //메뉴 불러오는 목적으로 가져옴.
+    private final BoardRepository boardRepository;
 
     @Override
     public void read(String domain, Integer no, Model model) {
@@ -45,10 +53,43 @@ public class BlogServiceImp implements BlogService {
                     .viewCount(post.getViewCount())
                     .build();
         }
-
+        getMenu(domain,model);
         model.addAttribute("domain",domain);
         model.addAttribute("post", postDTO);
 
+    }
+
+    //메뉴 불러오는 목적으로 가져옴.
+    public void getMenu(String domain, Model model) {
+        Optional<BoardEntity> boardSelect = boardRepository.findByTypeAndDomain(2, domain);
+        if (boardSelect.isEmpty()) {
+            throw new IllegalArgumentException("Board not found for domain: " + domain);
+        }
+        BoardEntity board = boardSelect.get();
+        Integer boardNo = board.getNo();
+        List<MenuEntity> menus = menuRepository.findByBoardNoAndRefAndUseYNOrderByOrderNoAsc(boardNo, 0, 'Y');
+        List<MenuDTO> filterMenus = new ArrayList<>();
+
+        for (MenuEntity menu : menus) {
+            List<MenuEntity> filteredChildren = new ArrayList<>();
+            for (MenuEntity child : menu.getChildren()) {
+                if (child.getUseYN() == 'Y') {
+                    filteredChildren.add(child);
+                }
+            }
+            filterMenus.add(new MenuDTO(
+                    menu.getNo(),
+                    menu.getBoard().getNo(),
+                    menu.getOrderNo(),
+                    menu.getDepth(),
+                    menu.getName(),
+                    menu.getRef(),
+                    menu.getUseYN(),
+                    filteredChildren // 필터링된 children 리스트
+            ));
+        }
+        model.addAttribute("domain",domain);
+        model.addAttribute("menuList",filterMenus);
     }
 
 
