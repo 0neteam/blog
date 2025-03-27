@@ -1,5 +1,6 @@
 package com.java.blog.blog2.service;
 
+import com.java.blog.blog2.dto.PostDTO;
 import com.java.blog.blog2.repository.UserRepository;
 import com.java.blog.config.Utils;
 import com.java.blog.entity.BoardEntity;
@@ -11,7 +12,6 @@ import com.java.blog.blog2.repository.PostRepository;
 import com.java.blog.entity.UserEntity;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
-import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -32,78 +32,81 @@ public class BlogServiceImp implements BlogService {
     @Qualifier("boardRepository2")
     private final BoardRepository boardRepository;
     private final Utils utils;
-
     private final UserRepository userRepository;
 
-    // 게시글 목록 조회: request attribute "domain"를 통해 해당 BoardEntity를 조회하고, 그 board에 속하는 글들을 가져옴
     @Override
     public Map<String, Object> findList(HttpServletRequest req) {
         String domain = (String) req.getAttribute("domain");
         if (domain == null || domain.isEmpty()) {
             domain = "default";
         }
-        // 기존 "blog/list/" 접두어를 제거
-        // String fullDomain = "blog/list/" + domain;
         BoardEntity board = boardRepository.findFirstByDomain(domain)
                 .orElseThrow(() -> new RuntimeException("해당 도메인의 게시판이 없습니다."));
-
         List<PostEntity> posts = postRepository.findByBoardNoOrderByRegDateDesc(board.getNo());
-
-        // 디버깅용 로그 출력
         System.out.println("조회된 board.no: " + board.getNo());
         System.out.println("조회된 posts 수: " + posts.size());
-
         Map<String, Object> result = new HashMap<>();
         result.put("posts", posts);
         return result;
     }
 
-
-
-    // 메뉴 목록 조회: boardNo를 이용하여 해당 게시판에 속한 메뉴들을 가져옴
     @Override
     public List<MenuEntity> findBoardNo(int boardNo) {
         return menuRepository.findByBoard_No(boardNo);
     }
 
-    // 게시글 저장: 도메인 정보를 사용해 현재 BoardEntity를 조회하고 글을 저장
     @Override
-    public void savePost(PostEntity post, String domain) {
-        if (post.getRegUserNo() == null) {
-            post.setRegUserNo(1);
+    public void savePost(PostDTO postDTO, String domain, HttpServletRequest req) {
+        String userNoStr = utils.getUserNo(req);
+        if (userNoStr == null || userNoStr.isEmpty()) {
+            throw new RuntimeException("로그인이 필요합니다.");
         }
-        MenuEntity menu = menuRepository.findById(post.getMenu().getNo())
+        int userNo = Integer.parseInt(userNoStr);
+        PostEntity post = new PostEntity();
+        post.setTitle(postDTO.getTitle());
+        post.setContent(postDTO.getContent());
+        post.setRegUserNo(userNo);  // 실제 로그인한 사용자의 번호
+        MenuEntity menu = menuRepository.findById(postDTO.getMenuNo())
                 .orElseThrow(() -> new RuntimeException("메뉴를 찾을 수 없습니다."));
-        // ✂️ prefix 제거 — 이제 findBoardByDomain(domain) 호출만으로 충분
+        post.setMenu(menu);
         BoardEntity board = findBoardByDomain(domain);
-
         post.setRegDate(LocalDateTime.now());
         post.setViewCount(0);
         post.setUseYN('Y');
-        post.setMenu(menu);
         postRepository.save(post);
     }
 
-    // 블로그 생성: 요청 파라미터(userName, userId)를 통해 BoardEntity 생성 및 기본 메뉴 생성
+
+
+
+
+
+
+
     @Override
     @Transactional
     public String createBlog(HttpServletRequest req) {
         // JWT에서 userNo 추출
         String userNoStr = utils.getUserNo(req);
-        if(userNoStr == null) throw new RuntimeException("로그인 필요");
+        if (userNoStr == null) throw new RuntimeException("로그인이 필요합니다.");
         int userNo = Integer.parseInt(userNoStr);
 
         // DB에서 사용자 정보 조회
         UserEntity user = userRepository.findById(userNo)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-        String userName = user.getName();  // DB에 저장된 사용자 이름 (예: "realBlog")
+        String userName = user.getName();  // 기본 도메인 값
+
+        // 중복 체크: 같은 type(블로그, 즉 2)과 같은 domain이 이미 존재하는지 확인
+        boolean exists = boardRepository.existsByDomainAndType(userName, 2);
+        if (exists) {
+            throw new RuntimeException("이미 사용 중인 도메인입니다. 도메인을 변경해주세요.");
+        }
 
         BoardEntity blog = new BoardEntity();
         blog.setRegUserNo(userNo);
         blog.setType(2);
         blog.setName(userName + "의 블로그");
-        // 도메인을 사용자 이름으로 설정 (예: "realBlog")
-        blog.setDomain(userName);
+        blog.setDomain(userName);  // 기본적으로 사용자 이름을 도메인으로 설정
         blog.setDescription(userName + "'s Personal Blog");
         blog.setUseYN('Y');
         blog.setRegDate(LocalDateTime.now());
@@ -124,10 +127,6 @@ public class BlogServiceImp implements BlogService {
     }
 
 
-
-
-
-    // 도메인으로 BoardEntity를 조회하는 헬퍼 메서드
     @Override
     public BoardEntity findBoardByDomain(String domain) {
         return boardRepository.findFirstByDomain(domain)
@@ -136,9 +135,7 @@ public class BlogServiceImp implements BlogService {
 
     @Override
     public Map<BoardEntity, List<PostEntity>> getHomeData() {
-        // type=2(블로그), useYN='Y'인 모든 게시판 조회
         List<BoardEntity> boards = boardRepository.findByTypeAndUseYN(2, 'Y');
-
         Map<BoardEntity, List<PostEntity>> result = new LinkedHashMap<>();
         for (BoardEntity b : boards) {
             List<PostEntity> recent = postRepository.findTop3ByMenu_Board_NoOrderByRegDateDesc(b.getNo());
@@ -158,12 +155,10 @@ public class BlogServiceImp implements BlogService {
         MenuEntity menu = menuRepository.findById(menuNo)
                 .orElseThrow(() -> new RuntimeException("해당 메뉴가 없습니다."));
         List<PostEntity> posts = postRepository.findByBoardNoOrderByRegDateDesc(board.getNo());
-
         Map<String, Object> result = new HashMap<>();
         result.put("board", board);
         result.put("menu", menu);
         result.put("posts", posts);
         return result;
     }
-
 }

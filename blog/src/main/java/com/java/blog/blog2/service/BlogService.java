@@ -1,5 +1,6 @@
 package com.java.blog.blog2.service;
 
+import com.java.blog.blog2.dto.PostDTO;
 import com.java.blog.entity.MenuEntity;
 import com.java.blog.entity.PostEntity;
 import com.java.blog.entity.BoardEntity;
@@ -10,7 +11,7 @@ import java.util.Map;
 public interface BlogService {
     public Map<String, Object> findList(HttpServletRequest req);
     public List<MenuEntity> findBoardNo(int boardNo);
-    public void savePost(PostEntity post, String domain);
+    public void savePost(PostDTO postDTO, String domain, HttpServletRequest req);
     public String createBlog(HttpServletRequest req);
     public BoardEntity findBoardByDomain(String domain);
     public Map<BoardEntity, List<PostEntity>> getHomeData();
