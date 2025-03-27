@@ -28,21 +28,27 @@ public class BlogController {
     @Qualifier(value = "blogServiceImp1")
     private final BlogService blogService;
 
-    @GetMapping
-    public String postDetail(Model model, @RequestParam(name = "no") Integer no){
+//    @GetMapping
+//    public String postDetail(Model model, @RequestParam(name = "no") Integer no){
+//        return blogService.postDetail(model, no);
+//    }
 
-        return blogService.postDetail(model, no);
-
+    @GetMapping("/{no:[0-9]+}")
+    public String read(@PathVariable("domain") String domain, @PathVariable("no") Integer no, Model model) {
+        blogService.read(domain, no, model);
+        return "blogPostDetail";
     }
+    //http://127.0.0.1:8002/blog1/post2/?no=2
+    //http://127.0.0.1:8002/blog1/post2/2
 
-    @PatchMapping
-    public String blogPostEdit() { return "blogPostEdit"; }
+//    @PatchMapping
+//    public String blogPostEdit() { return "blogPostEdit"; }
 
-    @DeleteMapping
-    @PostMapping("delete")
-    public char deletePost(@RequestParam("no") Integer no){
-        return blogService.deletePost(no);
-    }
+//    @DeleteMapping
+//    @PostMapping("delete")
+//    public char deletePost(@RequestParam("no") Integer no){
+//        return blogService.deletePost(no);
+//    }
 
 //    @ResponseBody
 //    @PostMapping("getMenu")

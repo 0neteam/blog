@@ -1,183 +1,224 @@
 <!DOCTYPE html>
 <html xmlns:th="http//www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/extras/spring-security6"
-    xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}">
+  xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" layout:decorate="~{default}">
 
 <head>
-    <link rel="stylesheet" href="/css/blogStyle.css">
-</head>
-<div layout:fragment="content">
-    <script src="/js/blog/postDetail.js"></script>
-    <link rel="stylesheet" href="static/css/blogStyle.css">
-    <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+  <link rel="stylesheet" href="/css/blogStyle.css">
+  <link rel="stylesheet" href="/css/blogPost.css">
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/attaches@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/code@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/raw@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/marker@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/nested-list@latest"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
+  <script src="/js/blog/postDetail.js"></script>
+  <link rel="stylesheet" href="static/css/blogStyle.css">
+  <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
 
-    <link rel="stylesheet" href="/css/blogStyle.css">
-    <link rel="stylesheet" href="/css/blogPost.css">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/editorjs@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/header@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/image@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/attaches@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/inline-code@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/delimiter@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/checklist@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/code@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/raw@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/marker@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/nested-list@latest"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@editorjs/paragraph@latest"></script>
+  <style type="text/css">
+    * {
+      box-sizing: border-box;
+    }
 
-    <main>
-        <div>
-            <button type="button" id="save" onclick="saveEvent()">저장</button>
-            <button type="button" id="edit" onclick="editEvent()">수정</button>
-            <button type="button" id="clear" onclick="clearEvent()">초기화</button>
-        </div>
-        <hr/>
-        <div>
-                   <input type="text" name="title" id="title" class="form-control " required="required" style="width: 100%"
-                   th:value="${post.title}" readonly/>
-                   <span>작성일: <p th:text="${post.regDate}"></p></span>
-          </div>
-          <div id="editorjs"></div>
-          <script th:inline="javascript">
-            const boardData = [[${boardData}]]; // 서버에서 전달한 데이터를 가져옴
-            const parsedData = JSON.parse(boardData); // JSON 문자열을 객체로 파싱
-        
-            const saveEvent = async () => { // async 추가
-              try {
-                const data = await editor.save(); // await 추가
-                if (data.blocks.length > 0) {
-                  // 비동기 통신으로 내용 저장
-                  const title = document.getElementById("title").value;
-        
-                  console.log(data);
-                  console.log(JSON.stringify(data.blocks));
-                  editor.readOnly.toggle();
-        
-                  const formData = new FormData();
-                  formData.append("title", title);
-                  formData.append("content", JSON.stringify(data.blocks));
-        
-                  // axios 요청
-                  const response = await axios({
-                    method: 'POST',
-                    url: 'http://192.168.0.21:8080/board/upload',
-                    data: formData
-                  });
-                  console.log(response.data); // 응답 데이터를 출력
-                  return response.data;
-                }
-              } catch (error) {
-                console.error(error);
-              }
-            };
-            const editEvent = () => {
+    body {
+      margin: 0;
+      padding: 0;
+    }
+
+    main {
+      margin: 50px 10vw 0;
+    }
+
+    #title {
+      margin: 10px 0;
+    }
+
+    #editorjs {
+      background-color: #d3e3fd;
+      min-height: 40vh;
+    }
+
+    .ce-block__content {
+      max-width: 100% !important;
+      padding: 0 20px;
+    }
+
+    .ce-toolbar__content {
+      max-width: 100% !important;
+    }
+
+    .codex-editor__redactor {
+      padding-bottom: 0 !important;
+      margin-right: 0 !important;
+    }
+  </style>
+  <script th:inline="javascript">
+    $(document).ready(() => {
+      $("#edit").on("click", () => {
+        editor.readOnly.toggle();
+        $("#edit").addClass("d-none");
+        $("#save").removeClass("d-none");
+
+        $("#r-title").addClass("d-none");
+        $("#title").removeClass("d-none");
+      });
+
+      $("#save").on("click", () => {
+        editor.save().then(data => {
+          if (data.blocks.length > 0) {
+            // 에디터에 내용물이 존재 함!!
+            let content = JSON.stringify(data.blocks);
+            let param = {
+              menuNo: $("#menuNo").val(),
+              title: $("#title").val(),
+              content
+            }
+            let url = document.location.pathname;
+            axios({
+              method: 'Patch',
+              url: url,
+              data: param
+            }).then(res => {
+              if (res.data.status === 'success') {
                 editor.readOnly.toggle();
-            }
-            const clearEvent = () => {
-                editor.clear();
-            }
-          const fileUpload = async (file) => {
-            const formData = new FormData()
-            formData.append("file", file)
-        
-            try {
-              const response = await axios({
-                method: 'POST',
-                url: 'http://192.168.0.21:8080/file/upload',
-                data: formData
-              });
-              return response.data;
-            } catch (error) {
-              console.error(error);
-            }
-        
-            return new Promise((resolve, reject) => {
-              resolve({
-                success: 0,
-                file: {url: ''}
-              })
-            });
+                $("#save").addClass("d-none");
+                $("#edit").removeClass("d-none");
+
+                $("#r-title").text($("#title").val());
+                $("#title").addClass("d-none");
+                $("#r-title").removeClass("d-none");
+              }
+            }).catch(err => console.log(err));
           }
-          const editor = new EditorJS({
-            holderId : 'editorjs',
-            data: {blocks: parsedData },
-            readOnly: true, // 상세보기에서 사용하는 옵션 설정
-            tools: {
-                   paragraph: {
-                   class: Paragraph,
-                   config: {placeholder: '내용을 입력하세요.'},
-                   inlineToolbar: true
-                 },
-              header: {
-                class: Header,
-                inlineToolbar : true
-              },
-              quote: {
-                class: Quote,
-                inlineToolbar: true,
-                config: {
-                  quotePlaceholder: 'Enter a quote',
-                  captionPlaceholder: 'Quote\'s author',
-                },
-                shortcut: 'CMD+SHIFT+O'
-              },
-              marker: {
-                class: Marker,
-                shortcut: 'CMD+SHIFT+M',
-              },
-              delimiter: Delimiter,
-              table: {
-                class: Table,
-                inlineToolbar: true,
-                shortcut: 'CMD+ALT+T'
-              },
-              list: {
-                class: NestedList,
-                inlineToolbar: true,
-                config: {defaultStyle: 'unordered'},
-                shortcut: 'CMD+SHIFT+L'
-              },
-              raw: RawTool,
-              code: CodeTool,
-              inlineCode: {
-                class: InlineCode,
-                shortcut: 'CMD+SHIFT+M',
-              },
-              checklist: {
-                class: Checklist,
-                inlineToolbar: true,
-              },
-              image: {
-                class: ImageTool,
-                config: {
-                  uploader: {
-                      uploadByFile(file){
-                        return fileUpload(file)
-                      }
-                  },
-                  field: 'image',
-                  types: 'image/*'
+        });
+
+      });
+
+      $("#delete").on("click", () => {
+        console.log("delete");
+      });
+
+      /*<![CDATA[*/
+      const data = JSON.parse([[${ post.content }]]);
+      /*]]>*/
+      const editor = new EditorJS({
+        holder: 'editorjs',
+        data: { blocks: data },
+        readOnly: true,
+        tools: {
+          paragraph: {
+            class: Paragraph,
+            config: { placeholder: '내용을 입력하세요.' },
+            inlineToolbar: true
+          },
+          header: {
+            class: Header,
+            inlineToolbar: true
+          },
+          quote: {
+            class: Quote,
+            inlineToolbar: true,
+            config: {
+              quotePlaceholder: 'Enter a quote',
+              captionPlaceholder: 'Quote\'s author',
+            },
+            shortcut: 'CMD+SHIFT+O'
+          },
+          marker: {
+            class: Marker,
+            shortcut: 'CMD+SHIFT+M',
+          },
+          delimiter: Delimiter,
+          table: {
+            class: Table,
+            inlineToolbar: true,
+            shortcut: 'CMD+ALT+T'
+          },
+          list: {
+            class: NestedList,
+            inlineToolbar: true,
+            config: { defaultStyle: 'unordered' },
+            shortcut: 'CMD+SHIFT+L'
+          },
+          raw: RawTool,
+          code: CodeTool,
+          inlineCode: {
+            class: InlineCode,
+            shortcut: 'CMD+SHIFT+M',
+          },
+          checklist: {
+            class: Checklist,
+            inlineToolbar: true,
+          },
+          image: {
+            class: ImageTool,
+            config: {
+              uploader: {
+                uploadByFile(file) {
+                  return fileUpload(file)
                 }
               },
-              attaches: {
-                class: AttachesTool,
-                config: {
-                  uploader: {
-                    uploadByFile(file) {
-                      return fileUpload(file)
-                    }
-                  }
-                }
-              },
+              field: 'image',
+              types: 'image/*'
             }
-          });
-          </script>
-    </main>
-</div>
+          },
+          attaches: {
+            class: AttachesTool,
+            config: {
+              uploader: {
+                uploadByFile(file) {
+                  return fileUpload(file)
+                }
+              }
+            }
+          },
+        }
+      });
+
+    });
+  </script>
+
+</head>
+
+<body th:attr="data-domain=${domain}">
+  <main layout:fragment="content">
+    <div class="d-flex justify-content-end mb-3">
+      <button class="btn btn-outline-secondary me-2">이전글</button>
+      <button class="btn btn-outline-secondary me-2">목록</button>
+      <button class="btn btn-outline-secondary">다음글</button>
+    </div>
+    <p class="text-muted small mb-1" th:text="${post.menuName}"></p>
+    <input type="hidden" name="menuNo" id="menuNo" th:value="${post.menuNo}" />
+    <h4>글 제목</h4>
+    <p th:text="${post.title}" id="r-title"></p>
+    <input class="d-none" type="text" name="title" id="title" th:value="${post.title}" required />
+    <div class="d-flex justify-content-between align-items-center mb-3">
+      <p class="text-muted small mb-0">작성자 <span th:text="${post.regName}"></span> | <span
+          th:text="${post.regDate}"></span> | 조회수 <span th:text="${post.viewCount}"></span></p>
+      <div>
+        <button class="btn btn-sm btn-success me-2" id="edit">수정</button>
+        <button class="btn btn-sm btn-success me-2 d-none" id="save">저장</button>
+        <button class="btn btn-sm btn-danger" id="delete">삭제</button>
+      </div>
+    </div>
+    <hr>
+
+    <div class="mb-4">
+      <div id="editorjs"></div>
+    </div>
+  </main>
+
+</body>
 
 </html>
