@@ -69,4 +69,21 @@ public class BlogServiceImp implements BlogService {
                 .no(no)
                 .build();
     }
+
+    @Override
+    public PostResDTO writeDel(Integer no) {
+        String status = "fail";
+        try {
+            PostEntity post = postRepository.findById(no).orElseThrow();
+            post.setUseYN('N');
+            post = postRepository.save(post);
+            if(post.getNo() > 0) {
+                status = "success";
+            }
+        } catch (Exception e) {}
+        return PostResDTO.builder()
+                .status(status)
+                .no(no)
+                .build();
+    }
 }

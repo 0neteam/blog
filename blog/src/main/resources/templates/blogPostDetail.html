@@ -106,8 +106,17 @@
       });
 
       $("#delete").on("click", () => {
-        console.log("delete");
-      });
+                console.log("delete");
+                let url = document.location.pathname;
+                axios({
+                    method: 'Delete',
+                    url : url
+                }).then(res => {
+                    if(res.data.status === 'success') {
+                        window.location.href = "/" + $("body").attr("data-domain")
+                    }
+                }).catch(err => console.log(err));
+            });
 
       /*<![CDATA[*/
       const data = JSON.parse([[${ post.content }]]);

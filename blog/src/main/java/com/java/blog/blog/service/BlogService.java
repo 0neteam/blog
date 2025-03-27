@@ -9,4 +9,6 @@ public interface BlogService {
     void read(String domain, Integer no, Model model);
 
     PostResDTO writeEdit(Integer no, PostDTO postDTO);
+
+    PostResDTO writeDel(Integer no);
 }

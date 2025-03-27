@@ -15,37 +15,29 @@ import org.springframework.web.bind.annotation.*;
 @RequiredArgsConstructor
 @Controller(value = "blogController1")
 public class BlogController {
-//    @GetMapping("/blogList")
-//    public String blogList(){
-//        return "blogList";
-//    }
-//
-//    @GetMapping("/blogPost")
-//    public String blogPost(){
-//        return "blogPost";
-//    }
-    //
-
 
     @Qualifier(value = "blogServiceImp1")
     private final BlogService blogService;
-
-//    @GetMapping
-//    public String postDetail(Model model, @RequestParam(name = "no") Integer no){
-//        return blogService.postDetail(model, no);
-//    }
-
+    
+    // 게시글 조회
     @GetMapping("/{no:[0-9]+}")
     public String read(@PathVariable("domain") String domain, @PathVariable("no") Integer no, Model model) {
         blogService.read(domain, no, model);
         return "blogPostDetail";
     }
 
-    // 포스트 수정
+    // 게시글 수정
     @PatchMapping("/{no:[0-9]+}")
     @ResponseBody
     public PostResDTO writeEdit(@PathVariable("no") Integer no, @RequestBody PostDTO postDTO) {
         return blogService.writeEdit(no, postDTO);
+    }
+
+    // 포스트 삭제
+    @DeleteMapping("/{no:[0-9]+}")
+    @ResponseBody
+    public PostResDTO writeDelete(@PathVariable("domain") String domain, @PathVariable("no") Integer no) {
+        return blogService.writeDel(no);
     }
 
 }
