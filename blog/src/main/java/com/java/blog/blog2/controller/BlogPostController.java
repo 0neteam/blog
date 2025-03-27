@@ -1,5 +1,6 @@
 package com.java.blog.blog2.controller;
 
+import com.java.blog.blog.dto.PostResDTO;
 import com.java.blog.blog2.dto.PostDTO;
 import com.java.blog.blog2.service.BlogService;
 import com.java.blog.entity.BoardEntity;
@@ -19,6 +20,8 @@ import java.util.List;
 public class BlogPostController {
 
     private final BlogService blogService;
+
+
 
     // 글 작성 페이지 (GET /{domain}/post)
     @GetMapping
