@@ -10,5 +10,6 @@ import java.util.Optional;
 public interface BoardRepository extends JpaRepository<BoardEntity, Integer> {
     BoardEntity findByNo(int no);
     public Optional<BoardEntity> findByTypeAndDomain(Integer type, String domain);
+    Optional<BoardEntity> findFirstByDomain(String domain);
 
 }
