@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 //@RequestMapping("/post")
 //@RequiredArgsConstructor
 
-@RequestMapping("/{domain}/post")
+@RequestMapping("/{domain}/post2")
 @RequiredArgsConstructor
 @Controller(value = "blogController1")
 public class BlogController {
