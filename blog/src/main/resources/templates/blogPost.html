@@ -27,7 +27,6 @@
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/quote@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/table@latest"></script>
     <script src="https://cdn.jsdelivr.net/npm/@editorjs/nested-list@latest"></script>
-
     <script>
         // 파일 업로드 함수: 파일을 FormData에 담아 백엔드 엔드포인트로 전송
         const fileUpload = async (file) => {
@@ -51,7 +50,6 @@
         }
 
         $(document).ready(() => {
-
           // EditorJS 인스턴스 초기화 (파일 업로드 설정 포함)
           const editor = new EditorJS({
             holder : 'editorjs',
@@ -64,7 +62,7 @@
               },
               header: {
                 class: Header,
-                inlineToolbar : true
+                inlineToolbar: true
               },
               image: {
                 class: ImageTool,
@@ -79,7 +77,6 @@
                   types: 'image/*'
                 }
               },
-              // attaches 등 다른 도구들도 동일하게 uploader 옵션을 설정할 수 있습니다.
               attaches: {
                 class: AttachesTool,
                 config: {
@@ -90,62 +87,56 @@
                   }
                 }
               },
-              // 나머지 도구 설정...
-              // 추가 도구들...
+              // 나머지 도구들도 동일하게 설정 가능
+              // checklist, code, quote, table, nested-list 등
             }
           });
 
-          // 폼 제출 처리 (EditorJS의 내용을 hidden 필드에 저장 후 전송)
+          // 폼 제출 처리 (EditorJS의 내용을 JSON으로 변환 후 전송)
 $("form").on("submit", function(e) {
-    // 브라우저 내장 유효성 검사 실행
-    if (!this.checkValidity()) {
-        // 유효하지 않으면 에러 메시지 표시하고 제출 중단
-        this.reportValidity();
-        return; // 제출 중단
-    }
     e.preventDefault(); // 기본 제출 막음
+
+    // 필수값 수동 검사 (메뉴와 제목)
+    let menuVal = $("#menuSelect").val();
+    let titleVal = $("#title").val().trim();
+
+    if (!menuVal || !titleVal || titleVal.trim() === "") {
+        alert("메뉴와 제목은 필수 입력 항목입니다.");
+        return; // 필수값이 없으면 제출 중단
+    }
 
     editor.save().then(data => {
         if (data.blocks.length > 0) {
-            // 에디터 내용 JSON으로 변환
             let content = JSON.stringify(data.blocks);
             let param = {
-                menuNo: $("#menuSelect").val(), // 셀렉트박스 값
-                title: $("input[th\\:field='*{title}']").val(), // 제목 값
+                menuNo: menuVal,
+                title: titleVal,
                 content
             }
             let url = "/" + $("body").attr("data-domain") + "/post/save";
-            axios({
-                method: 'POST',
-                url: url,
-                data: param
-            }).then(res => {
-                if (res.data.status === 'success') {
-                    document.location.href = "/" + $("body").attr("data-domain");
-                }
-            }).catch(err => console.log(err));
+            axios.post(url, param)
+                 .then(res => {
+                    if (res.data.status === 'success') {
+                        document.location.href = "/" + $("body").attr("data-domain");
+                    }
+                 })
+                 .catch(err => console.log(err));
         }
     });
 });
 
-
-          // editor.js 관련 버튼 이벤트 등...
+          // 에디터 버튼들
           window.saveEvent = function() {
             $("form").trigger("submit");
           };
-
           window.editEvent = function() {
             editor.readOnly.toggle();
           };
-
           window.clearEvent = function() {
             editor.clear();
           };
-
         });
     </script>
-
-
 </head>
 <body th:attr="data-domain=${domain}">
 <main layout:fragment="content">
@@ -156,7 +147,6 @@ $("form").on("submit", function(e) {
           th:object="${post}"
           method="post">
         <!-- 메뉴 선택 -->
-        <!-- 메뉴 선택 셀렉트박스: PostDTO의 menuNo 필드로 바인딩 -->
         <div class="mb-3">
             <label for="menuSelect" class="form-label">메뉴</label>
             <select id="menuSelect" class="form-select" th:field="*{menuNo}" required>
@@ -170,8 +160,9 @@ $("form").on("submit", function(e) {
         <!-- 글 제목 -->
         <div class="mb-3">
             <label class="form-label">글 제목</label>
-            <input class="form-control" th:field="*{title}" placeholder="제목 입력" required/>
+            <input id="title" class="form-control" th:field="*{title}" placeholder="제목 입력" required/>
         </div>
+
         <!-- 에디터 영역 -->
         <div class="mb-3">
             <label class="form-label">본문</label>
@@ -179,14 +170,14 @@ $("form").on("submit", function(e) {
             <!-- EditorJS로 생성된 내용은 JS에서 hidden 필드에 저장 -->
             <input type="hidden" id="content" name="content"/>
         </div>
+
         <!-- 버튼 영역 -->
         <div class="d-flex justify-content-end gap-2">
-            <button type="button" id="save" onclick="saveEvent()">저장</button>
-            <button type="button" id="edit" onclick="editEvent()">수정</button>
-            <button type="button" id="clear" onclick="clearEvent()">초기화</button>
+            <button type="button" class="btn btn-success" id="save" onclick="saveEvent()">등록</button>
+            <button type="button" class="btn btn-secondary" id="clear" onclick="clearEvent()">초기화</button>
         </div>
     </form>
-    <script src="/js/blog/blogPost.js"></script>
+
 </main>
 </body>
 </html>

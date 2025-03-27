@@ -11,7 +11,7 @@ import java.util.Map;
 public interface BlogService {
     public Map<String, Object> findList(HttpServletRequest req);
     public List<MenuEntity> findBoardNo(int boardNo);
-    public void savePost(PostDTO postDTO, String domain, HttpServletRequest req);
+    public int savePost(PostDTO postDTO, String domain, HttpServletRequest req);
     public String createBlog(HttpServletRequest req);
     public BoardEntity findBoardByDomain(String domain);
     public Map<BoardEntity, List<PostEntity>> getHomeData();
