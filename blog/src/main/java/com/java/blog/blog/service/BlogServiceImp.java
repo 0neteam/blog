@@ -48,6 +48,7 @@ public class BlogServiceImp implements BlogService {
                     .viewCount(post.getViewCount())
                     .build();
         }
+
         model.addAttribute("domain",domain);
         model.addAttribute("post", postDTO);
 

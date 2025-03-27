@@ -27,6 +27,7 @@ public class BlogHomeController {
                 userNo = Integer.parseInt(userNoStr);
             } catch (NumberFormatException ignored) {}
         }
+        model.addAttribute("showAside", false);
         model.addAttribute("hasBlog", blogService.hasBlog(userNo));
         model.addAttribute("homeData", blogService.getHomeData());
         return "blogHome"; // 뷰: blogHome.html
