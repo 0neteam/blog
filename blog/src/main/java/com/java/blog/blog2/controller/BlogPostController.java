@@ -23,18 +23,15 @@ public class BlogPostController {
     // 글 작성 페이지 (GET /{domain}/post)
     @GetMapping
     public String blogPost(@PathVariable("domain") String domain, Model model, HttpServletRequest req) {
-        // 도메인에 맞는 BoardEntity 조회
         BoardEntity board = blogService.findBoardByDomain(domain);
-        // Board에 속한 메뉴 목록 조회
         List<MenuEntity> menus = blogService.findBoardNo(board.getNo());
-        // PostEntity를 생성할 때 menu 객체 초기화 (nested binding을 위해)
-        PostEntity post = new PostEntity();
-        post.setMenu(new MenuEntity());
-
+        // PostDTO로 폼 렌더링
+        PostDTO post = new PostDTO();
+        model.addAttribute("showAside", false);
         model.addAttribute("post", post);
         model.addAttribute("menus", menus);
         model.addAttribute("domain", domain);
-        return "blogPost"; // 뷰 템플릿 blogPost.html
+        return "blogPost";
     }
 
     // 글 저장 요청 (POST /{domain}/post/save)

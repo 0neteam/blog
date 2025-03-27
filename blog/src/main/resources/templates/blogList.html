@@ -30,18 +30,12 @@
                 <a th:href="@{/postDetail(id=${post.no})}"
                    th:text="${post.title}"
                    class="fw-bold text-dark text-decoration-none">
-                    글 제목
                 </a>
-                <p class="text-muted small mb-0"
-                   th:text="${#strings.length(post.content) > 60
-                       ? #strings.substring(post.content, 0, 60) + '...'
-                       : post.content}">
-                    글 내용 미리보기
+                <p class="text-muted small mb-0" th:text="${previewMap[post.no]}">
                 </p>
             </td>
             <td class="text-end"
                 th:text="${#temporals.format(post.regDate, 'yyyy.MM.dd. HH:mm')}">
-                2025.03.25. 14:30
             </td>
         </tr>
         </tbody>
