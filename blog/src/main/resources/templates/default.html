@@ -11,15 +11,16 @@
 </head>
 
 <body>
-      <div th:replace="~{fragment/header :: header}"></div>
-      <div class="row">
-            <div class="col-12 col-md-3 col-lg-2 ">
-                  <div th:replace="~{fragment/aside :: aside}"></div>
-            </div>
-            <div class="col-12 col-md-9 col-lg-10">
-                  <div layout:fragment="content" class="content"></div>
-            </div>
+<div th:replace="~{fragment/header :: header}"></div>
+<div class="row">
+      <!-- model.addAttribute("showAside", false); 추가시 아래 div는 사라짐. -->
+      <div class="col-12 col-md-3 col-lg-2 " th:if="${showAside != false}">
+            <div th:replace="~{fragment/aside :: aside}"></div>
       </div>
+      <div class="col-12 col-md-9 col-lg-10">
+            <div layout:fragment="content" class="content"></div>
+      </div>
+</div>
 </body>
 
 </html>

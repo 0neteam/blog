@@ -43,12 +43,36 @@ public class BlogServiceImp implements BlogService {
         BoardEntity board = boardRepository.findFirstByDomain(domain)
                 .orElseThrow(() -> new RuntimeException("해당 도메인의 게시판이 없습니다."));
         List<PostEntity> posts = postRepository.findByBoardNoOrderByRegDateDesc(board.getNo());
+
+        // 미리보기 텍스트를 저장할 Map (key: 글번호)
+        Map<Integer, String> previewMap = new HashMap<>();
+
+        // 정규식을 사용하여 "text":"..." 값을 추출 (대소문자 구분 없음)
+        java.util.regex.Pattern pattern = java.util.regex.Pattern.compile("\"text\"\\s*:\\s*\"(.*?)\"", java.util.regex.Pattern.CASE_INSENSITIVE);
+
+        for (PostEntity post : posts) {
+            String content = post.getContent();  // EditorJS JSON 문자열
+            String preview = "";
+            if (content != null && !content.isEmpty()) {
+                java.util.regex.Matcher matcher = pattern.matcher(content);
+                if (matcher.find()) {
+                    preview = matcher.group(1);
+                    if (preview.length() > 60) {
+                        preview = preview.substring(0, 60) + "...";
+                    }
+                }
+            }
+            previewMap.put(post.getNo(), preview);
+        }
+
         System.out.println("조회된 board.no: " + board.getNo());
         System.out.println("조회된 posts 수: " + posts.size());
         Map<String, Object> result = new HashMap<>();
         result.put("posts", posts);
+        result.put("previewMap", previewMap);
         return result;
     }
+
 
     @Override
     public List<MenuEntity> findBoardNo(int boardNo) {
@@ -57,24 +81,34 @@ public class BlogServiceImp implements BlogService {
 
     @Override
     public void savePost(PostDTO postDTO, String domain, HttpServletRequest req) {
+        // JWT 토큰에서 실제 로그인된 사용자 번호 추출
         String userNoStr = utils.getUserNo(req);
         if (userNoStr == null || userNoStr.isEmpty()) {
             throw new RuntimeException("로그인이 필요합니다.");
         }
         int userNo = Integer.parseInt(userNoStr);
+
+        // PostDTO를 PostEntity로 변환 (예시: 직접 변환)
         PostEntity post = new PostEntity();
         post.setTitle(postDTO.getTitle());
         post.setContent(postDTO.getContent());
-        post.setRegUserNo(userNo);  // 실제 로그인한 사용자의 번호
+        // 여기서 실제 로그인된 사용자의 번호를 할당합니다.
+        post.setRegUserNo(userNo);
+
+        // 메뉴 번호를 기반으로 MenuEntity 조회
         MenuEntity menu = menuRepository.findById(postDTO.getMenuNo())
                 .orElseThrow(() -> new RuntimeException("메뉴를 찾을 수 없습니다."));
         post.setMenu(menu);
+
+        // 도메인에 맞는 BoardEntity 조회
         BoardEntity board = findBoardByDomain(domain);
         post.setRegDate(LocalDateTime.now());
         post.setViewCount(0);
         post.setUseYN('Y');
+
         postRepository.save(post);
     }
+
 
 
 
@@ -116,7 +150,7 @@ public class BlogServiceImp implements BlogService {
         if (menuRepository.findByBoard_No(blog.getNo()).isEmpty()) {
             MenuEntity defaultMenu = new MenuEntity();
             defaultMenu.setBoard(blog);
-            defaultMenu.setName("기본 메뉴");
+            defaultMenu.setName("낙서장");
             defaultMenu.setOrderNo(1);
             defaultMenu.setDepth(1);
             defaultMenu.setRef(0);
