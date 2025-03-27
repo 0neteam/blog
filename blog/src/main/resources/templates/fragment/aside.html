@@ -22,7 +22,8 @@
                 <p><strong>가입일:</strong> 2025-03-17</p>
             </div>
             <div class="list-group-item">
-                <a class="list-group-item list-group-item-action border text-center" href="blogPost">글 작성</a>
+                <a class="list-group-item list-group-item-action border text-center"
+                    th:href="@{/{domain}/post(domain=${domain})}">글 작성</a>
             </div>
             <div class="list-group-item">
                 <div class="input-group">
@@ -39,14 +40,18 @@
             <div class="list-group-item">
                 <ul class="list-unstyled">
                     <li th:each="eachMenu : ${menuList}">
-                        <p th:text="${eachMenu.name}"></p>
+                        <span th:text="${eachMenu.name}"></span>
+                        <ul th:if="${eachMenu.children != null}" class="list-unstyled ms-3">
+                            <li th:each="child : ${eachMenu.children}">
+                                <span th:text="${child.name}"></span>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
-
             </div>
         </div>
         <div class="mt-auto">
-            <a class="btn btn-outline-primary w-100" href="blogList.html">목록으로 가기</a>
+            <a class="btn btn-outline-primary w-100" th:href="@{/{domain}(domain=${domain})}">목록으로 가기</a>
         </div>
     </aside>
 
