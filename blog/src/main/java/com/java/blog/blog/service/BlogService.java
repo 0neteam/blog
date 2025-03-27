@@ -1,12 +1,14 @@
 package com.java.blog.blog.service;
 
 
+import com.java.blog.blog.dto.PostDTO;
+import com.java.blog.blog.dto.PostResDTO;
 import org.springframework.ui.Model;
 
 public interface BlogService {
-    String postDetail(Model model, Integer no);
+    void read(String domain, Integer no, Model model);
 
-    char deletePost(Integer no);
+    PostResDTO writeEdit(Integer no, PostDTO postDTO);
 
-    String getMenu(Model model);
+    PostResDTO writeDel(Integer no);
 }
