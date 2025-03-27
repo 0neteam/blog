@@ -80,34 +80,29 @@ public class BlogServiceImp implements BlogService {
     }
 
     @Override
-    public void savePost(PostDTO postDTO, String domain, HttpServletRequest req) {
-        // JWT 토큰에서 실제 로그인된 사용자 번호 추출
+    @Transactional
+    public int savePost(PostDTO postDTO, String domain, HttpServletRequest req) {
         String userNoStr = utils.getUserNo(req);
         if (userNoStr == null || userNoStr.isEmpty()) {
             throw new RuntimeException("로그인이 필요합니다.");
         }
         int userNo = Integer.parseInt(userNoStr);
 
-        // PostDTO를 PostEntity로 변환 (예시: 직접 변환)
-        PostEntity post = new PostEntity();
-        post.setTitle(postDTO.getTitle());
-        post.setContent(postDTO.getContent());
-        // 여기서 실제 로그인된 사용자의 번호를 할당합니다.
-        post.setRegUserNo(userNo);
-
-        // 메뉴 번호를 기반으로 MenuEntity 조회
         MenuEntity menu = menuRepository.findById(postDTO.getMenuNo())
                 .orElseThrow(() -> new RuntimeException("메뉴를 찾을 수 없습니다."));
+        PostEntity post = new PostEntity();
         post.setMenu(menu);
-
-        // 도메인에 맞는 BoardEntity 조회
-        BoardEntity board = findBoardByDomain(domain);
+        post.setTitle(postDTO.getTitle());
+        post.setContent(postDTO.getContent());
+        post.setRegUserNo(userNo);
         post.setRegDate(LocalDateTime.now());
         post.setViewCount(0);
         post.setUseYN('Y');
 
-        postRepository.save(post);
+        PostEntity saved = postRepository.save(post);
+        return saved.getNo();
     }
+
 
 
 
