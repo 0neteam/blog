@@ -2,20 +2,19 @@ package com.java.blog.blog.service;
 
 import com.java.blog.blog.dto.PostDTO;
 import com.java.blog.blog.dto.PostResDTO;
+import com.java.blog.blog.repository.BoardRepository;
+import com.java.blog.blog.repository.MenuRepository;
 import com.java.blog.blog.repository.UserRepository;
 import com.java.blog.entity.MenuEntity;
 import com.java.blog.entity.PostEntity;
-import com.java.blog.blog.repository.MenuRepository;
 import com.java.blog.blog.repository.PostRepository;
 import com.java.blog.entity.UserEntity;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.data.jpa.repository.Modifying;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 @RequiredArgsConstructor
 @Service(value = "blogServiceImp1")
@@ -23,10 +22,15 @@ public class BlogServiceImp implements BlogService {
 
     @Qualifier(value = "postRepository1")
     private final PostRepository postRepository;
-    @Qualifier(value = "menuRepository1")
-    private final MenuRepository menuRepository;
+
     @Qualifier(value = "userRepository1")
     private final UserRepository userRepository;
+
+    @Qualifier(value = "boardRepository1")
+    private final BoardRepository boardRepository;
+
+    @Qualifier(value = "menuRepository1")
+    private final MenuRepository menuRepository;
 
     @Override
     public void read(String domain, Integer no, Model model) {
@@ -44,8 +48,13 @@ public class BlogServiceImp implements BlogService {
                     .viewCount(post.getViewCount())
                     .build();
         }
+        model.addAttribute("domain",domain);
         model.addAttribute("post", postDTO);
+
     }
+
+
+
 
     @Override
     public PostResDTO writeEdit(Integer no, PostDTO postDTO) {

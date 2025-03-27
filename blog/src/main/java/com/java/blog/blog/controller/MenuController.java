@@ -18,6 +18,8 @@ public class MenuController {
 
     private final MenuService menuService;
 
+    
+    //메뉴 관리 화면에서 메뉴들을 화면에 뿌려주는 목적의 메서드
     @GetMapping
     public String menuManage(@PathVariable String domain, Model model){
         return menuService.getMenu(domain, model);

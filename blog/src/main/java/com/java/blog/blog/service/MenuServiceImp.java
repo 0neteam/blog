@@ -1,15 +1,12 @@
 package com.java.blog.blog.service;
 
 
-import com.java.blog.blog.dto.MenuAddDTO;
 import com.java.blog.blog.dto.MenuDTO;
-import com.java.blog.blog.dto.MenuDeleteDTO;
 import com.java.blog.blog.repository.BoardRepository;
 import com.java.blog.entity.BoardEntity;
 import com.java.blog.entity.MenuEntity;
 import com.java.blog.blog.repository.MenuRepository;
 import lombok.AllArgsConstructor;
-import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 import org.springframework.ui.Model;
@@ -20,7 +17,7 @@ import java.util.Optional;
 
 @AllArgsConstructor
 @Service
-public class MenuSErviceImp implements MenuService {
+public class MenuServiceImp implements MenuService {
 
     @Qualifier(value = "menuRepository1")
     private final MenuRepository menuRepository;
