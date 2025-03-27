@@ -54,4 +54,8 @@ public class PostEntity {
     @Column(nullable = false)
     private char useYN;
 
+     @OneToOne
+     @JoinColumn(name = "regUserNo", referencedColumnName = "no", insertable = false, updatable = false)
+     private UserEntity user;
+
 }
