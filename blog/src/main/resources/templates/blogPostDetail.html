@@ -204,7 +204,7 @@
   <main layout:fragment="content">
     <div class="d-flex justify-content-end mb-3">
       <button class="btn btn-outline-secondary me-2">이전글</button>
-      <button class="btn btn-outline-secondary me-2">목록</button>
+      <a class="btn btn-outline-secondary me-2" th:href="@{/{domain}(domain=${domain})}">목록</a>
       <button class="btn btn-outline-secondary">다음글</button>
     </div>
     <p class="text-muted small mb-1" th:text="${post.menuName}"></p>

@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.*;
 
 
 //blog2의 BlogPostController 의 reqMapping과 겹치기때문에 임시로 post2로 변경.
-@RequestMapping("/{domain}/post2")
+@RequestMapping("/{domain}/postRWD")
 @RequiredArgsConstructor
 @Controller(value = "blogController1")
 public class BlogController {

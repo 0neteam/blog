@@ -1,5 +1,6 @@
 package com.java.blog.blog2.controller;
 
+import com.java.blog.blog.dto.PostResDTO;
 import com.java.blog.blog2.dto.PostDTO;
 import com.java.blog.blog2.service.BlogService;
 import com.java.blog.config.Utils;
@@ -23,6 +24,12 @@ public class BlogPostController {
     private final BlogService blogService;
     private final Utils utils;
 
+<<<<<<< HEAD
+=======
+
+
+    // 글 작성 페이지 (GET /{domain}/post)
+>>>>>>> 2ae8ab3256719ade699743c4afd893c867851a5f
     @GetMapping
     public String blogPost(@PathVariable String domain, Model model, HttpServletRequest req) {
         String userNoStr = utils.getUserNo(req);

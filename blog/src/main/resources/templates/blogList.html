@@ -6,7 +6,7 @@
     <meta charset="UTF-8">
     <title>블로그 글 목록</title>
 </head>
-<body>
+<body th:attr="data-domain=${domain}">
 <div layout:fragment="content" class="container mt-4">
     <!-- 상단 영역 -->
     <div class="d-flex justify-content-between align-items-center mb-3">
@@ -27,7 +27,8 @@
         <tbody>
         <tr th:each="post : ${posts}">
             <td>
-                <a th:href="@{/postDetail(id=${post.no})}"
+                <!-- <a th:href="@{/postDetail(id=${post.no})}" -->
+                    <a th:href="@{/{domain}/postRWD/{no}(domain=${domain}, no=${post.no})}"
                    th:text="${post.title}"
                    class="fw-bold text-dark text-decoration-none">
                 </a>
