@@ -43,4 +43,5 @@ public class BlogPostController {
         blogService.savePost(postDTO, domain, req);
         return "redirect:/" + domain;
     }
+
 }
