@@ -26,9 +26,6 @@ public class BlogServiceImp implements BlogService {
     @Qualifier(value = "userRepository1")
     private final UserRepository userRepository;
 
-    @Qualifier(value = "boardRepository1")
-    private final BoardRepository boardRepository;
-
     @Qualifier(value = "menuRepository1")
     private final MenuRepository menuRepository;
 
