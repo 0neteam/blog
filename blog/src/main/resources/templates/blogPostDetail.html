@@ -74,6 +74,30 @@
         $("#title").removeClass("d-none");
       });
 
+      const fileUpload = async (file) => {
+          const formData = new FormData();
+          formData.append("file", file);
+
+          try {
+              const response = await axios({
+                  method: 'POST',
+                  url: 'http://d.0neteam.co.kr:9000/file/upload',
+                  withCredentials: true,
+                  data: formData
+              });
+              return response.data;
+          } catch (error) {
+              console.error(error);
+          }
+
+          return new Promise((resolve, reject) => {
+              resolve({
+                  success: 0,
+                  file: {url: ''}
+              })
+          });
+      }
+
       $("#save").on("click", () => {
         editor.save().then(data => {
           if (data.blocks.length > 0) {
@@ -88,6 +112,7 @@
             axios({
               method: 'Patch',
               url: url,
+              withCredentials: true,
               data: param
             }).then(res => {
               if (res.data.status === 'success') {
@@ -110,7 +135,8 @@
                 let url = document.location.pathname;
                 axios({
                     method: 'Delete',
-                    url : url
+                    url : url,
+                    withCredentials: true
                 }).then(res => {
                     if(res.data.status === 'success') {
                         window.location.href = "/" + $("body").attr("data-domain")

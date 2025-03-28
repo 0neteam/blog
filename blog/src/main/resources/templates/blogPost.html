@@ -36,6 +36,7 @@
             const response = await axios({
               method: 'POST',
               url: 'http://d.0neteam.co.kr:9000/file/upload',
+              withCredentials: true,
               data: formData
             });
             // 백엔드가 { success: 1, file: { url: '파일 URL' } } 형태로 응답한다고 가정합니다.
@@ -108,7 +109,7 @@
                           content
                       }
                       let url = "/" + $("body").attr("data-domain") + "/post/save";
-                      axios.post(url, param)
+                      axios.post(url, param, { withCredentials: true })
                            .then(res => {
                               if (res.data.status === 'success') {
                                   document.location.href = "/" + $("body").attr("data-domain");
