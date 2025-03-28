@@ -70,8 +70,11 @@ public class BlogServiceImp implements BlogService {
         Map<String, Object> result = new HashMap<>();
         result.put("posts", posts);
         result.put("previewMap", previewMap);
+        result.put("board", board);  // board 정보를 추가
         return result;
     }
+
+
 
 
     @Override
@@ -123,10 +126,12 @@ public class BlogServiceImp implements BlogService {
         // DB에서 사용자 정보 조회
         UserEntity user = userRepository.findById(userNo)
                 .orElseThrow(() -> new RuntimeException("사용자를 찾을 수 없습니다."));
-        String userName = user.getName();  // 기본 도메인 값
+        // 이메일을 기본 도메인 값으로 사용
+        String userEmail = user.getEmail();
+        String userName = user.getName();
 
-        // 중복 체크: 같은 type(블로그, 즉 2)과 같은 domain이 이미 존재하는지 확인
-        boolean exists = boardRepository.existsByDomainAndType(userName, 2);
+        // 중복 체크: 같은 type(블로그, 즉 2)과 같은 domain(이메일)이 이미 존재하는지 확인
+        boolean exists = boardRepository.existsByDomainAndType(userEmail, 2);
         if (exists) {
             throw new RuntimeException("이미 사용 중인 도메인입니다. 도메인을 변경해주세요.");
         }
@@ -135,8 +140,8 @@ public class BlogServiceImp implements BlogService {
         blog.setRegUserNo(userNo);
         blog.setType(2);
         blog.setName(userName + "의 블로그");
-        blog.setDomain(userName);  // 기본적으로 사용자 이름을 도메인으로 설정
-        blog.setDescription(userName + "'s Personal Blog");
+        blog.setDomain(userEmail);  // 기본 도메인을 이메일로 설정
+        blog.setDescription(userEmail + "'s Personal Blog");
         blog.setUseYN('Y');
         blog.setRegDate(LocalDateTime.now());
         boardRepository.save(blog);
@@ -152,8 +157,9 @@ public class BlogServiceImp implements BlogService {
             defaultMenu.setUseYN('Y');
             menuRepository.save(defaultMenu);
         }
-        return userName;
+        return userEmail;
     }
+
 
 
     @Override

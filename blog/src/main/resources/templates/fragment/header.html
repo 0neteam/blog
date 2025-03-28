@@ -1,38 +1,40 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org"
       xmlns:sec="http://www.thymeleaf.org/extras/spring-security6">
-
-    <header th:fragment="header" class="navbar navbar-expand-sm border-bottom">
-        <div class="d-flex flex-wrap justify-content-between align-items-center w-100">
+<header th:fragment="header" class="navbar navbar-expand-sm border-bottom">
+    <div class="d-flex flex-wrap justify-content-between align-items-center w-100">
             <span class="navbar-brand d-flex align-items-center p-0">
-                <a href="#">
+                <a th:href="@{'http://d.0neteam.co.kr:9000/'}">
                     <img class="ms-2" src="/img/logo_oneteam.png" alt="oneteam logo" height="45px">
                 </a>
-                <a href="#">
+                <a th:href="@{'http://d.0neteam.co.kr:8002/'}">
                     <img src="/img/logo_blog.png" alt="cafe logo" height="20px">
                 </a>
             </span>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
                 data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"
                 aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarSupportedContent">
-                <ul class="navbar-nav d-flex align-items-center gap-3 ms-auto">
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">로그인</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">로그아웃</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">내정보</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#">내블로그</a>
-                    </li>
-                </ul>
-            </div>
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav d-flex align-items-center gap-3 ms-auto">
+                <!-- 로그인하지 않은 상태 -->
+                <li class="nav-item" sec:authorize="isAnonymous()">
+                    <a class="nav-link" th:href="@{'http://d.0neteam.co.kr:9000/signIn'}">로그인</a>
+                </li>
+                <!-- 로그인한 상태 -->
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{'http://d.0neteam.co.kr:9000/oauth2/logout'}">로그아웃</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{'http://d.0neteam.co.kr:9000/MyPageInfo'}">내정보</a>
+                </li>
+                <li class="nav-item" sec:authorize="isAuthenticated()">
+                    <a class="nav-link" th:href="@{|http://d.0neteam.co.kr:8002/${@utils.getUserName()}|}">내블로그</a>
+                </li>
+
+            </ul>
         </div>
-    </header>
+    </div>
+</header>
 </html>

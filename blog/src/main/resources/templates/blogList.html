@@ -11,7 +11,7 @@
     <!-- 상단 영역 -->
     <div class="d-flex justify-content-between align-items-center mb-3">
         <h4>
-            <span th:text="${menu != null ? menu.name : '블로그'}">블로그</span>,
+            <span th:text="${board != null ? board.name : '블로그'}">블로그</span>,
             <span th:text="${#lists.size(posts)} + '개의 글'"></span>
         </h4>
     </div>
