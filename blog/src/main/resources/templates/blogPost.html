@@ -32,7 +32,6 @@
         const fileUpload = async (file) => {
           const formData = new FormData();
           formData.append("file", file);
-
           try {
             const response = await axios({
               method: 'POST',
@@ -44,8 +43,6 @@
           } catch (error) {
             console.error("File upload error:", error);
           }
-
-          // 에러 시 기본값 반환
           return { success: 0, file: { url: '' } };
         }
 
@@ -68,7 +65,6 @@
                 class: ImageTool,
                 config: {
                   uploader: {
-                    // 파일 선택 시 호출되는 함수: fileUpload 함수를 사용
                     uploadByFile(file) {
                       return fileUpload(file);
                     }
@@ -86,44 +82,42 @@
                     }
                   }
                 }
-              },
-              // 나머지 도구들도 동일하게 설정 가능
-              // checklist, code, quote, table, nested-list 등
+              }
+              // 기타 도구들도 동일하게 설정 가능
             }
           });
 
           // 폼 제출 처리 (EditorJS의 내용을 JSON으로 변환 후 전송)
-$("form").on("submit", function(e) {
-    e.preventDefault(); // 기본 제출 막음
+          $("form").on("submit", function(e) {
+              e.preventDefault(); // 기본 제출 막음
 
-    // 필수값 수동 검사 (메뉴와 제목)
-    let menuVal = $("#menuSelect").val();
-    let titleVal = $("#title").val().trim();
+              let menuVal = $("#menuSelect").val();
+              let titleVal = $("#title").val().trim();
 
-    if (!menuVal || !titleVal || titleVal.trim() === "") {
-        alert("메뉴와 제목은 필수 입력 항목입니다.");
-        return; // 필수값이 없으면 제출 중단
-    }
+              if (!menuVal || titleVal === "") {
+                  alert("메뉴와 제목은 필수 입력 항목입니다.");
+                  return;
+              }
 
-    editor.save().then(data => {
-        if (data.blocks.length > 0) {
-            let content = JSON.stringify(data.blocks);
-            let param = {
-                menuNo: menuVal,
-                title: titleVal,
-                content
-            }
-            let url = "/" + $("body").attr("data-domain") + "/post/save";
-            axios.post(url, param)
-                 .then(res => {
-                    if (res.data.status === 'success') {
-                        document.location.href = "/" + $("body").attr("data-domain");
-                    }
-                 })
-                 .catch(err => console.log(err));
-        }
-    });
-});
+              editor.save().then(data => {
+                  if (data.blocks.length > 0) {
+                      let content = JSON.stringify(data.blocks);
+                      let param = {
+                          menuNo: menuVal,
+                          title: titleVal,
+                          content
+                      }
+                      let url = "/" + $("body").attr("data-domain") + "/post/save";
+                      axios.post(url, param)
+                           .then(res => {
+                              if (res.data.status === 'success') {
+                                  document.location.href = "/" + $("body").attr("data-domain");
+                              }
+                           })
+                           .catch(err => console.log(err));
+                  }
+              });
+          });
 
           // 에디터 버튼들
           window.saveEvent = function() {
@@ -132,8 +126,10 @@ $("form").on("submit", function(e) {
           window.editEvent = function() {
             editor.readOnly.toggle();
           };
-          window.clearEvent = function() {
-            editor.clear();
+          // 취소 버튼: 현재 작성 중인 글을 취소하고 내블로그 페이지로 이동
+          window.cancelEvent = function() {
+            let domain = $("body").attr("data-domain");
+            window.location.href = "http://d.0neteam.co.kr:8002/" + domain;
           };
         });
     </script>
@@ -174,10 +170,9 @@ $("form").on("submit", function(e) {
         <!-- 버튼 영역 -->
         <div class="d-flex justify-content-end gap-2">
             <button type="button" class="btn btn-success" id="save" onclick="saveEvent()">등록</button>
-            <button type="button" class="btn btn-secondary" id="clear" onclick="clearEvent()">초기화</button>
+            <button type="button" class="btn btn-secondary" id="cancel" onclick="cancelEvent()">취소</button>
         </div>
     </form>
-
 </main>
 </body>
 </html>
