@@ -14,12 +14,12 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
-@Controller("blogPostController")
-@RequiredArgsConstructor
-@RequestMapping("/{domain}/post")
+//@Controller("blogPostController")
+//@RequiredArgsConstructor
+//@RequestMapping("/{domain}/post")
 public class BlogPostController {
 
-    private final BlogService blogService;
+//    private final BlogService blogService;
 
 
 

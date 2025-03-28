@@ -28,7 +28,7 @@
         <tr th:each="post : ${posts}">
             <td>
                 <!-- <a th:href="@{/postDetail(id=${post.no})}" -->
-                    <a th:href="@{/{domain}/postRWD/{no}(domain=${domain}, no=${post.no})}"
+                    <a th:href="@{/{domain}/post/{no}(domain=${domain}, no=${post.no})}"
                    th:text="${post.title}"
                    class="fw-bold text-dark text-decoration-none">
                 </a>
