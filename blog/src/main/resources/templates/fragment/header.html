@@ -29,7 +29,7 @@
                 <li class="nav-item" sec:authorize="isAuthenticated()">
                     <a class="nav-link" th:href="@{'http://d.0neteam.co.kr:9000/MyPageInfo'}">내정보</a>
                 </li>
-                <li class="nav-item" th:if="${userName != null}">
+                <li class="nav-item">
                     <a class="nav-link" th:href="@{|http://d.0neteam.co.kr:8002/${userName}|}">내블로그</a>
                 </li>
             </ul>
