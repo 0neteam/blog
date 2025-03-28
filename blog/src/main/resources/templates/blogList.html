@@ -25,19 +25,14 @@
         </tr>
         </thead>
         <tbody>
-        <tr th:each="post : ${posts}">
+        <tr th:each="post : ${posts}" th:if="${post.useYN eq 'Y'}">
             <td>
-                <!-- <a th:href="@{/postDetail(id=${post.no})}" -->
-                    <a th:href="@{/{domain}/postRWD/{no}(domain=${domain}, no=${post.no})}"
+                <a th:href="@{/{domain}/postRWD/{no}(domain=${domain}, no=${post.no})}"
                    th:text="${post.title}"
-                   class="fw-bold text-dark text-decoration-none">
-                </a>
-                <p class="text-muted small mb-0" th:text="${previewMap[post.no]}">
-                </p>
+                   class="fw-bold text-dark text-decoration-none"></a>
+                <p class="text-muted small mb-0" th:text="${previewMap[post.no]}"></p>
             </td>
-            <td class="text-end"
-                th:text="${#temporals.format(post.regDate, 'yyyy.MM.dd. HH:mm')}">
-            </td>
+            <td class="text-end" th:text="${#temporals.format(post.regDate, 'yyyy.MM.dd. HH:mm')}"></td>
         </tr>
         </tbody>
     </table>
